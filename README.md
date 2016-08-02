@@ -3,9 +3,10 @@
 
 *Clojure Client Library for the Mesos HTTP API*
 
+[![][logo]][logo-large]
+
 **meson** *noun*. A functional particle composed of a Mesos deployment and a Mesos HTTP API service bound together by the strongly interacting force of Clojure.
 
-[![][logo]][logo-large]
 
 #### Contents
 
@@ -19,17 +20,21 @@
 
 TBD
 
+
 ## Dependencies [&#x219F;](#contents)
 
 TBD
+
 
 ## Usage [&#x219F;](#contents)
 
 TBD
 
+
 ## Documentation [&#x219F;](#contents)
 
 TBD
+
 
 ## License [&#x219F;](#contents)
 
