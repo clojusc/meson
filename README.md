@@ -49,8 +49,8 @@ Apache License, Version 2.0.
 [travis-badge]: https://travis-ci.org/oubiwann/meson.png?branch=master
 [deps]: http://jarkeeper.com/oubiwann/meson
 [deps-badge]: http://jarkeeper.com/oubiwann/meson/status.svg
-[logo]: resources/images/201px-Meson_nonet_-_spin_0.svg.png
-[logo-large]: resources/images/201px-Meson_nonet_-_spin_0.svg.png
+[logo]: resources/images/Meson-nonet-spin-0-250x.png
+[logo-large]: resources/images/Meson-nonet-spin-0-1000x.png
 [tag-badge]: https://img.shields.io/github/tag/oubiwann/meson.svg?maxAge=2592000
 [tag]: https://github.com/oubiwann/meson/tags
 [clojure-v]: https://img.shields.io/badge/clojure-1.8.0-blue.svg
