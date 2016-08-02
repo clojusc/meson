@@ -1,6 +1,7 @@
-(defproject meson "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.7.0"]])
+(defproject meson "0.0.1-SNAPSHOT"
+  :description "Clojure Client Library for the Mesos HTTP API"
+  :url "https://github.com/oubiwann/meson"
+  :license {:name "Apache License, Version 2.0"
+            :url "http://www.apache.org/licenses/LICENSE-2.0"}
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [clj-http "3.1.0"]])
