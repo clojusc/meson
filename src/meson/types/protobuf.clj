@@ -1,4 +1,4 @@
-(ns meson.types
+(ns meson.types.protobuf
   "Utility functions to convert to and from mesos types."
   (:require [meson.util :refer [case-enum]])
   (:import org.apache.mesos.Protos$Status
