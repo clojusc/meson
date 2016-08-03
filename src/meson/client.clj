@@ -20,9 +20,11 @@
   (get-context [self]
     (format "%s/v%s" (:base-path self) (:version self))))
 
-(defn make-base-client
-  ""
+(defn ->base-client
+  "Unlike `->BaseClient`, this factory function takes a map of the client
+  fields as a single argument. If no argument is given, the default base client
+  map is used."
   ([]
-    (make-base-client base-client-fields))
+    (->base-client base-client-fields))
   ([fields]
     (BaseClient. {} fields)))
