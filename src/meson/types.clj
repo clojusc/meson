@@ -1,4 +1,4 @@
-(ns mesomatic.types
+(ns meson.types
   "Utility functions to convert to and from mesos types."
   (:import org.apache.mesos.Protos$Status
            org.apache.mesos.Protos$FrameworkID
