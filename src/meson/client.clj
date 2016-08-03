@@ -13,8 +13,8 @@
 
 (defprotocol BaseClientAPI
   (get-context [self]
-    "Get the context for this client, calculated using :base-path and
-    :version."))
+    "Get the context for this client, calculated using `:base-path` and
+    `:version`."))
 
 (defrecord BaseClient [] BaseClientAPI
   (get-context [self]
@@ -24,7 +24,7 @@
   "Unlike `->BaseClient`, this factory function takes a map of the client
   fields as a single argument. As such, it is essentially an alias for
   `map->BaseClient`. An important difference is that if no argument is given,
-  the default base client map (`base-client-fields`) is used."
+  the default base client map, `base-client-fields`, is used."
   ([]
     (->base-client base-client-fields))
   ([fields]
