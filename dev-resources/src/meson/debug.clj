@@ -10,7 +10,8 @@
             [clojure.data.codec.base64 :as b64]
             ;; meson
             [meson.core :as meson]
-            [meson.types :as types]))
+            [meson.types :as types]
+            [meson.util :as util]))
 
 ;;; Aliases
 
