@@ -22,9 +22,10 @@
 
 (defn ->base-client
   "Unlike `->BaseClient`, this factory function takes a map of the client
-  fields as a single argument. If no argument is given, the default base client
-  map is used."
+  fields as a single argument. As such, it is essentially an alias for
+  `map->BaseClient`. An important difference is that if no argument is given,
+  the default base client map (`base-client-fields`) is used."
   ([]
     (->base-client base-client-fields))
   ([fields]
-    (BaseClient. {} fields)))
+    (map->BaseClient fields)))
