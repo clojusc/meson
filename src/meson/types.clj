@@ -31,6 +31,13 @@
            org.apache.mesos.Protos$PerfStatistics
            org.apache.mesos.Protos$Request
            org.apache.mesos.Protos$Offer
+           org.apache.mesos.Protos$Offer$Operation
+           org.apache.mesos.Protos$Offer$Operation$Launch
+           org.apache.mesos.Protos$Offer$Operation$Reserve
+           org.apache.mesos.Protos$Offer$Operation$Unreserve
+           org.apache.mesos.Protos$Offer$Operation$Create
+           org.apache.mesos.Protos$Offer$Operation$Destroy
+           org.apache.mesos.Protos$Offer$Operation$Type
            org.apache.mesos.Protos$TaskInfo
            org.apache.mesos.Protos$TaskState
            org.apache.mesos.Protos$TaskStatus
@@ -362,7 +369,7 @@
    (.getPrincipal info)
    (.getWebuiUrl info)
    (when-let [labels (.getLabels info)] (pb->data labels))
-   (mapv pb->data (.getAllCapabilities info))))
+   (mapv pb->data (.getCapabilitiesList info))))
 
 ;; HealthCheck
 ;; ===========
@@ -462,9 +469,9 @@
   (data->pb [this]
     (-> (Protos$ExecutorInfo/newBuilder)
         (.setExecutorId (->pb :ExecutorID executor-id))
-        (.setCommandInfo (->pb :CommandInfo command))
+        (.setCommand (->pb :CommandInfo command))
         (cond->
-            framework-id (.setFrameWorkId (->pb :FrameworkID framework-id))
+            framework-id (.setFrameworkId (->pb :FrameworkID framework-id))
             container    (.setContainer (->pb :ContainerInfo container))
             name         (.setName (str name))
             source       (.setSource (str source))
@@ -536,7 +543,7 @@
    (.getHostname info)
    (.getPort info)
    (mapv pb->data (.getResourcesList info))
-   (mapv pb->data (.getAttributes info))
+   (mapv pb->data (.getAttributesList info))
    (when-let [id (.getId info)] (pb->data id))
    (.getCheckpoint info)))
 
@@ -648,7 +655,7 @@
         (cond->
             scalar (.setScalar (data->pb scalar))
             ranges (.setRanges (data->pb (ValueRanges. ranges)))
-            set    (.setSet (data->pb set))
+            (seq set)    (.setSet (data->pb set))
             role   (.setRole role))
         (.build))))
 
@@ -1020,6 +1027,95 @@
    (mapv pb->data (.getAttributesList offer))
    (mapv pb->data (.getExecutorIdsList offer))))
 
+;; Operation
+;; =========
+
+(defmethod pb->data Protos$Offer$Operation$Type
+  [^Protos$Offer$Operation$Type type]
+  (cond
+    (= type Protos$Offer$Operation$Type/LAUNCH)    :operation-launch
+    (= type Protos$Offer$Operation$Type/RESERVE)   :operation-reserve
+    (= type Protos$Offer$Operation$Type/UNRESERVE) :operation-unreserve
+    (= type Protos$Offer$Operation$Type/CREATE)    :operation-create
+    (= type Protos$Offer$Operation$Type/DESTROY)   :operation-destroy
+    :else type))
+
+(defrecord Operation [type tasks resources volumes]
+  Serializable
+  (data->pb [this]
+    (case (:type this)
+      :operation-launch
+        (let [launch (Protos$Offer$Operation$Launch/newBuilder)]
+          (.addAllTaskInfos
+            launch (mapv (partial ->pb :TaskInfo) tasks))
+          (-> (Protos$Offer$Operation/newBuilder)
+              (.setType (Protos$Offer$Operation$Type/LAUNCH))
+              (.setLaunch launch)
+              (.build)))
+      :operation-reserve
+        (let [reserve (Protos$Offer$Operation$Reserve/newBuilder)]
+          (.addAllResrouces
+            reserve (mapv (partial ->pb :Resource) resources))
+          (-> (Protos$Offer$Operation/newBuilder)
+              (.setType (Protos$Offer$Operation$Type/RESERVE))
+              (.setLaunch reserve)
+              (.build)))
+      :operation-unreserve
+        (let [unreserve (Protos$Offer$Operation$Unreserve/newBuilder)]
+          (.addAllResrouces
+            unreserve (mapv (partial ->pb :Resource) resources))
+          (-> (Protos$Offer$Operation/newBuilder)
+              (.setType (Protos$Offer$Operation$Type/UNRESERVE))
+              (.setLaunch unreserve)
+              (.build)))
+      :operation-create
+        (let [create (Protos$Offer$Operation$Create/newBuilder)]
+          (.addAllVolumes
+            create (mapv (partial ->pb :Volume) volumes))
+          (-> (Protos$Offer$Operation/newBuilder)
+              (.setType (Protos$Offer$Operation$Type/CREATE))
+              (.setLaunch create)
+              (.build)))
+      :operation-destroy
+        (let [destroy (Protos$Offer$Operation$Destroy/newBuilder)]
+          (.addAllVolumes
+            destroy (mapv (partial ->pb :Volume) volumes))
+          (-> (Protos$Offer$Operation/newBuilder)
+              (.setType (Protos$Offer$Operation$Type/DESTROY))
+              (.setLaunch destroy)
+              (.build))))))
+
+(defmethod pb->data Protos$Offer$Operation
+  [^Protos$Offer$Operation op]
+  (let [type (pb->data (.getType op))]
+    (println (format "Got type '%s'" type))
+    (case type
+      :operation-launch
+        (Operation. type
+                    (map pb->data (.getTaskInfosList (.getLaunch op)))
+                    nil
+                    nil)
+      :operation-reserve
+        (Operation. type
+                    nil
+                    (map pb->data (.getResourcesList (.getReserve op)))
+                    nil)
+      :operation-unreserve
+        (Operation. type
+                    nil
+                    (map pb->data (.getResourcesList (.getUnreserve op)))
+                    nil)
+      :operation-create
+        (Operation. type
+                    (map pb->data (.getVolumesList (.getCreate op)))
+                    nil
+                    nil)
+      :operation-destroy
+        (Operation. type
+                    (map pb->data (.getVolumesList (.getDestroy op)))
+                    nil
+                    nil))))
+
 ;; Ports
 ;; =====
 
@@ -1051,7 +1147,7 @@
 
 (defmethod pb->data Protos$Ports
   [^Protos$Ports ports]
-  (Ports. (mapv pb->data (.getAllPorts ports))))
+  (Ports. (mapv pb->data (.getPortsList ports))))
 
 ;; DiscoveryInfo
 ;; =============
@@ -1101,7 +1197,7 @@
           (.setTaskId (->pb :TaskID task-id))
           (.setSlaveId (->pb :SlaveID slave-id))
           (cond->
-              executor     (.setExecutor (->pb :ExecutorInfo container))
+              executor     (.setExecutor (->pb :ExecutorInfo executor))
               command      (.setCommand (->pb :CommandInfo command))
               container    (.setContainer (->pb :ContainerInfo container))
               data         (.setData data)
@@ -1452,7 +1548,7 @@
 
 (defmethod pb->data Protos$Labels
   [^Protos$Labels labels]
-  (Labels. (mapv pb->data (.getAllLabels labels))))
+  (Labels. (mapv pb->data (.getLabelsList labels))))
 
 
 ;; Safe for the common stuff in extend-protocol, this marks the end of
@@ -1480,7 +1576,7 @@
   clojure.lang.PersistentHashSet
   (data->pb [this]
     (-> (Protos$Value$Set/newBuilder)
-        (.addAllItems (seq this))
+        (.addAllItem (seq this))
         (.build)))
   java.lang.String
   (data->pb [this]
@@ -1492,6 +1588,11 @@
       :driver-running           Protos$Status/DRIVER_RUNNING
       :driver-aborted           Protos$Status/DRIVER_ABORTED
       :driver-stopped           Protos$Status/DRIVER_STOPPED
+      :operation-launch         Protos$Offer$Operation$Type/LAUNCH
+      :operation-reserve        Protos$Offer$Operation$Type/RESERVE
+      :operation-unreserve      Protos$Offer$Operation$Type/UNRESERVE
+      :operation-create         Protos$Offer$Operation$Type/CREATE
+      :operation-destroy        Protos$Offer$Operation$Type/DESTROY
       :task-staging             Protos$TaskState/TASK_STAGING
       :task-starting            Protos$TaskState/TASK_STARTING
       :task-running             Protos$TaskState/TASK_RUNNING
@@ -1514,6 +1615,9 @@
       :machine-mode-up          Protos$MachineInfo$Mode/UP
       :machine-mode-draining    Protos$MachineInfo$Mode/DRAINING
       :machine-mode-down        Protos$MachineInfo$Mode/DOWN
+      :source-master            Protos$TaskStatus$Source/SOURCE_MASTER
+      :source-slave             Protos$TaskStatus$Source/SOURCE_SLAVE
+      :source-executor          Protos$TaskStatus$Source/SOURCE_EXECUTOR
 
       ;; These are too wide and mess up indenting!
       :framework-capability-revocable-resource
@@ -1575,40 +1679,41 @@
   (data->pb
    (if (record? this)
      this
-     (cond
-       (= :FrameworkID map-type) (map->FrameworkID this)
-       (= :OfferID map-type) (map->OfferID this)
-       (= :SlaveID map-type) (map->SlaveID this)
-       (= :TaskID map-type)   (map->TaskID this)
-       (= :ExecutorID map-type) (map->ExecutorID this)
-       (= :ContainerID map-type) (map->ContainerID this)
-       (= :FrameworkInfo map-type) (map->FrameworkInfo this)
-       (= :HealthCheckHTTP map-type) (map->HealthCheckHTTP this)
-       (= :HealthCheck map-type) (map->HealthCheck this)
-       (= :URI map-type) (map->URI this)
-       (= :CommandInfo map-type) (map->CommandInfo this)
-       (= :ExecutorInfo map-type) (map->ExecutorInfo this)
-       (= :MasterInfo map-type)   (map->MasterInfo this)
-       (= :SlaveInfo map-type)    (map->SlaveInfo this)
-       (= :ValueRange map-type)   (map->ValueRange this)
-       (= :ValueRanges map-type)  (map->ValueRanges this)
-       (= :Value map-type)        (map->Value this)
-       (= :Attribute map-type)    (map->Attribute this)
-       (= :Resource map-type)     (map->Resource this)
-       (= :Request map-type)      (map->Request this)
-       (= :Offer map-type)                (map->Offer this)
-       (= :TaskInfo map-type)             (map->TaskInfo this)
-       (= :TaskStatus map-type)           (map->TaskStatus this)
-       (= :Filters map-type)              (map->Filters this)
-       (= :EnvironmentVariable map-type)  (map->EnvironmentVariable this)
-       (= :Environment map-type)          (map->Environment this)
-       (= :Parameter map-type)            (map->Parameter this)
-       (= :Parameters map-type)           (map->Parameter this)
-       (= :Credential map-type)           (map->Credential this)
-       (= :Credentials map-type)          (map->Credentials this)
-       (= :RateLimit map-type)            (map->RateLimit this)
-       (= :RateLimits map-type)           (map->RateLimits this)
-       (= :Volume map-type)               (map->Volume this)
-       (= :PortMapping map-type)          (map->PortMapping this)
-       (= :DockerInfo map-type)           (map->DockerInfo this)
-       (= :ContainerInfo map-type)        (map->ContainerInfo this)))))
+     (case map-type
+       :FrameworkID         (map->FrameworkID this)
+       :OfferID             (map->OfferID this)
+       :SlaveID             (map->SlaveID this)
+       :TaskID              (map->TaskID this)
+       :ExecutorID          (map->ExecutorID this)
+       :ContainerID         (map->ContainerID this)
+       :FrameworkInfo       (map->FrameworkInfo this)
+       :HealthCheckHTTP     (map->HealthCheckHTTP this)
+       :HealthCheck         (map->HealthCheck this)
+       :URI                 (map->URI this)
+       :CommandInfo         (map->CommandInfo this)
+       :ExecutorInfo        (map->ExecutorInfo this)
+       :MasterInfo          (map->MasterInfo this)
+       :SlaveInfo           (map->SlaveInfo this)
+       :ValueRange          (map->ValueRange this)
+       :ValueRanges         (map->ValueRanges this)
+       :Value               (map->Value this)
+       :Attribute           (map->Attribute this)
+       :Resource            (map->Resource this)
+       :Request             (map->Request this)
+       :Offer               (map->Offer this)
+       :Operation           (map->Operation this)
+       :TaskInfo            (map->TaskInfo this)
+       :TaskStatus          (map->TaskStatus this)
+       :Filters             (map->Filters this)
+       :EnvironmentVariable (map->EnvironmentVariable this)
+       :Environment         (map->Environment this)
+       :Parameter           (map->Parameter this)
+       :Parameters          (map->Parameter this)
+       :Credential          (map->Credential this)
+       :Credentials         (map->Credentials this)
+       :RateLimit           (map->RateLimit this)
+       :RateLimits          (map->RateLimits this)
+       :Volume              (map->Volume this)
+       :PortMapping         (map->PortMapping this)
+       :DockerInfo          (map->DockerInfo this)
+       :ContainerInfo       (map->ContainerInfo this)))))
