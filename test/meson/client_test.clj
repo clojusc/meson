@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [meson.client :as client]))
 
-(deftest make-base-client
+(deftest ->base-client
   (let [c (client/->base-client)]
     (is (= (:base-path c) "/api"))
     (is (= (:version c) "1"))
