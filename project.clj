@@ -14,7 +14,7 @@
     :project {
       :name "meson"
       :description "Clojure Client Library for the Mesos HTTP API"}
-    :namespaces [#"^meson\."]
+    :namespaces [#"^meson\.(?!debug)"]
     :output-path "docs/master/current"
     :doc-paths ["docs/source"]
     :metadata {

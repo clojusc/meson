@@ -24,8 +24,7 @@ TBD
 
 ## Dependencies [&#x219F;](#contents)
 
-Meson API Reference docs are available here:
- * [http://oubiwann.github.io/meson/](http://oubiwann.github.io/meson/)
+TBD
 
 
 ## Usage [&#x219F;](#contents)
@@ -35,7 +34,8 @@ TBD
 
 ## Documentation [&#x219F;](#contents)
 
-TBD
+Meson API Reference docs are available here:
+ * [http://oubiwann.github.io/meson/](http://oubiwann.github.io/meson/)
 
 
 ## License [&#x219F;](#contents)
