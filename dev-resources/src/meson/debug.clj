@@ -11,6 +11,9 @@
             ;; meson
             [meson.client :as client]
             [meson.core :as meson]
+            [meson.http :as http]
+            [meson.scheduler :as scheduler]
+            [meson.types.json :as j-types]
             [meson.types.protobuf :as p-types]
             [meson.util :as util]))
 

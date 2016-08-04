@@ -1,6 +1,7 @@
 (ns meson.types.protobuf
   "Utility functions to convert to and from mesos types."
-  (:require [meson.util :refer [case-enum]])
+  (:require [clojure.walk :as walk]
+            [meson.util :refer [case-enum]])
   (:import org.apache.mesos.Protos$Status
            org.apache.mesos.Protos$FrameworkID
            org.apache.mesos.Protos$OfferID
@@ -73,8 +74,7 @@
            org.apache.mesos.Protos$DiscoveryInfo
            org.apache.mesos.Protos$DiscoveryInfo$Visibility
            org.apache.mesos.Protos$Label
-           org.apache.mesos.Protos$Labels
-           ))
+           org.apache.mesos.Protos$Labels))
 
 ;; Our two exported signatures: data->pb and pb->data
 
@@ -1717,4 +1717,16 @@
        :PortMapping         (map->PortMapping this)
        :DockerInfo          (map->DockerInfo this)
        :ContainerInfo       (map->ContainerInfo this)))))
+
+(defn ->map
+  "This takes a map (possibly empty), generates a record from it, converts that
+  to a Mesos protobuf object with the appropriate default values, and then
+  returns a nested Clojure map with all those values. At that point, the data
+  would be ready for conversion to another format (such as JSON)."
+  [^clojure.lang.Keyword record-name ^clojure.lang.PersistentArrayMap data]
+  (->> data
+       (->pb record-name)
+       (pb->data)
+       (walk/postwalk
+         #(if (map? %) (into {} %) %))))
 

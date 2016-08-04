@@ -1,7 +1,7 @@
-(ns meson.core-test
+(ns meson.http-test
   (:require [clojure.test :refer :all]
-            [meson.core :as meson]))
+            [meson.http :as http]))
 
-(deftest a-test
+(deftest get-verb
   (testing "I don't fail, but I don't do much."
     (is (= 1 1))))

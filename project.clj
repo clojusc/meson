@@ -8,7 +8,8 @@
                  [org.clojure/data.json "0.2.6"]
                  [org.apache.mesos/mesos "1.0.0"]
                  [clj-http "3.1.0"]
-                 [clojusc/twig "0.2.1"]]
+                 [clojusc/twig "0.2.1"]
+                 [leiningen-core "2.6.1"]]
   :plugins [[lein-codox "0.9.3"]]
   :codox {
     :project {

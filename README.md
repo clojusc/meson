@@ -24,12 +24,19 @@ TBD
 
 ## Dependencies [&#x219F;](#contents)
 
-TBD
+* Mesos 1.0+
+* `lein`
+* Java
+* Maven (used indirectly by `lein`)
 
 
 ## Usage [&#x219F;](#contents)
 
-TBD
+Start up the REPL (and be sure to have a running Mesos deployment), then:
+
+```clj
+
+```
 
 
 ## Documentation [&#x219F;](#contents)
