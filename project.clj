@@ -22,6 +22,17 @@
       :doc/format :markdown
       :doc "Documentation forthcoming"}}
   :profiles {
+    :uber {
+      :aot :all}
+    :test {
+      :plugins [
+        [jonase/eastwood "0.2.3" :exclusions [org.clojure/clojure]]
+        [lein-kibit "0.1.2" :exclusions [org.clojure/clojure]]]
+      :test-selectors {
+        :default :unit
+        :unit :unit
+        :system :system
+        :integration :integration}}
     :dev {
       :source-paths ["dev-resources/src"]
       :repl-options {:init-ns meson.debug}
