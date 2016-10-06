@@ -54,14 +54,14 @@ Apache License, Version 2.0.
 
 <!-- Named page links below: /-->
 
-[travis]: https://travis-ci.org/oubiwann/meson
-[travis-badge]: https://travis-ci.org/oubiwann/meson.png?branch=master
-[deps]: http://jarkeeper.com/oubiwann/meson
-[deps-badge]: http://jarkeeper.com/oubiwann/meson/status.svg
+[travis]: https://travis-ci.org/clojusc/meson
+[travis-badge]: https://travis-ci.org/clojusc/meson.png?branch=master
+[deps]: http://jarkeeper.com/clojusc/meson
+[deps-badge]: http://jarkeeper.com/clojusc/meson/status.svg
 [logo]: resources/images/Meson-nonet-spin-0-250x.png
 [logo-large]: resources/images/Meson-nonet-spin-0-1000x.png
-[tag-badge]: https://img.shields.io/github/tag/oubiwann/meson.svg?maxAge=2592000
-[tag]: https://github.com/oubiwann/meson/tags
+[tag-badge]: https://img.shields.io/github/tag/clojusc/meson.svg?maxAge=2592000
+[tag]: https://github.com/clojusc/meson/tags
 [clojure-v]: https://img.shields.io/badge/clojure-1.8.0-blue.svg
 [clojars]: https://clojars.org/meson
 [clojars-badge]: https://img.shields.io/clojars/v/meson.svg
