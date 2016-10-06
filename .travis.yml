@@ -1,7 +1,7 @@
 dist: trusty
 language: clojure
 script:
-  - lein test
+  - make check
 jdk:
   - oraclejdk8
   - oraclejdk7
