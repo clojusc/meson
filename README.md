@@ -47,7 +47,7 @@ Meson API Reference docs are available here:
 
 ## License [&#x219F;](#contents)
 
-Copyright © 2016 Duncan McGreggor
+Copyright © 2016, Clojure-Aided Enrichment Center
 
 Apache License, Version 2.0.
 

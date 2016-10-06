@@ -6,11 +6,11 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/data.json "0.2.6"]
-                 [org.apache.mesos/mesos "1.0.0"]
-                 [clj-http "3.1.0"]
-                 [clojusc/twig "0.2.1"]
-                 [leiningen-core "2.6.1"]]
-  :plugins [[lein-codox "0.9.3"]]
+                 [org.apache.mesos/mesos "1.0.1"]
+                 [clj-http "3.3.0"]
+                 [clojusc/twig "0.2.6"]
+                 [leiningen-core "2.7.1"]]
+  :plugins [[lein-codox "0.10.0"]]
   :codox {
     :project {
       :name "meson"
