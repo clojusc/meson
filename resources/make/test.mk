@@ -9,4 +9,4 @@ lint-ns:
 	@lein with-profile +test eastwood "{:linters [:unused-namespaces :wrong-ns-form] :namespaces [:source-paths]}"
 
 check: lint
-	lein test
+	@lein with-profile +test,-dev test :all
