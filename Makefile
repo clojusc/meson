@@ -3,6 +3,6 @@ PROJECT=meson
 STANDALONE=target/$(PROJECT)-$(VERSION)-SNAPSHOT-standalone.jar
 ROOT_DIR = $(shell pwd)
 
-include resources/make/code.mk
-include resources/make/docs.mk
-include resources/make/test.mk
+include dev-resources/make/code.mk
+include dev-resources/make/docs.mk
+include dev-resources/make/test.mk
