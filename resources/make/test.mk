@@ -10,3 +10,15 @@ lint-ns:
 
 check: lint
 	@lein with-profile +test,-dev test :all
+
+travis-check:
+	bash ./test/travis.sh
+
+local-travis-check:
+	bash ./test/local-travis/check.sh
+	bash ./test/travis.sh
+
+local-travis:
+	bash ./test/local-travis/setup.sh
+	docker build -t meson/test ./test/local-travis
+	docker run -t meson/test
