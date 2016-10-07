@@ -1,7 +1,7 @@
 dist: trusty
 sudo: required
 language: clojure
-before_install:
+before_script:
   - bash test/install_deps.sh
   - bash test/start_mesos.sh
 script:
