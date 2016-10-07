@@ -5,7 +5,9 @@ before_script:
   - bash test/install_deps.sh
   - bash test/start_mesos.sh
 script:
-  - make check
+  - lein compile
+  - lein uberjar
+  #- make check
 jdk:
   - oraclejdk8
   #- oraclejdk7
