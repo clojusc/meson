@@ -44,7 +44,7 @@ ENV MESON /home/travis/builds/meson
 ENV LEIN_ROOT true
 
 # XXX before merge, remove next line
-RUN echo "cache bust!!!!!"
+RUN echo "cache bust!!!!!!"
 RUN echo "\n\n*** Clone Meson repo ***\n\n"
 RUN cd $BUILDS && \
         git clone https://github.com/clojusc/meson.git
@@ -62,5 +62,5 @@ RUN cd $MESON && \
         $MESON/test/local-travis/guest-cmd-prep.sh
 
 # Copy latest code into the image
-COPY srs/meson/* $MESON/src/meson/
+COPY src/meson/* $MESON/src/meson/
 CMD "$MESON/test/local-travis/guest-cmd.sh"
