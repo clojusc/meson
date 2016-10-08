@@ -1,6 +1,10 @@
-lint:
+kibit:
 	@lein with-profile +test kibit
+
+eastwood:
 	@lein with-profile +test eastwood "{:namespaces [:source-paths]}"
+
+lint: kibit eastwood
 
 lint-unused:
 	@lein with-profile +test eastwood "{:linters [:unused-fn-args :unused-locals :unused-namespaces :unused-private-vars :wrong-ns-form] :namespaces [:source-paths]}"
