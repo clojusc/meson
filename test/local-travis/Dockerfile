@@ -41,6 +41,7 @@ RUN do-release-upgrade -f DistUpgradeViewNonInteractive && \
 # Install Mesos and Meson
 ENV BUILDS /home/travis/builds
 ENV MESON /home/travis/builds/meson
+ENV LEIN_ROOT true
 
 RUN echo "cache bust"
 RUN cd $BUILDS && \
