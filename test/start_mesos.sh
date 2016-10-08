@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-sudo nohup /usr/sbin/mesos-master --work_dir=/tmp/mesos-master --ip=127.0.0.1 > master.log &
-sudo nohup /usr/sbin/mesos-agent --work_dir=/tmp/mesos-agent --master=127.0.0.1:5050 > agent.log &
+nohup /usr/sbin/mesos-master --work_dir=/tmp/mesos-master --ip=127.0.0.1 > master.log &
+nohup /usr/sbin/mesos-agent --work_dir=/tmp/mesos-agent --master=127.0.0.1:5050 > agent.log &
 
 sleep 10
 

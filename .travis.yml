@@ -2,8 +2,8 @@ dist: trusty
 sudo: required
 language: clojure
 before_script:
-  - bash test/install_deps.sh
-  - bash test/start_mesos.sh
+  - sudo test/install_deps.sh
+  - sudo test/start_mesos.sh
 script:
   - make travis-check
 jdk:
