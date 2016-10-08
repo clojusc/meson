@@ -43,12 +43,13 @@ ENV BUILDS /home/travis/builds
 ENV MESON /home/travis/builds/meson
 ENV LEIN_ROOT true
 
-RUN echo "cache bust"
+RUN echo "cache bust!"
 RUN cd $BUILDS && \
         git clone https://github.com/clojusc/meson.git
 RUN cd $MESON && \
         git checkout issue/38/local-travis && \
         bash test/install_deps.sh && \
-        bash test/start_mesos.sh
+        bash test/start_mesos.sh && \
+        lein compile
 
-CMD "cd $MESON && echo `ls -al $MESON` && make local-travis-check"
+CMD ["$MESON/test/local-travis/guest-cmd.sh"]
