@@ -12,11 +12,21 @@ lint-unused:
 lint-ns:
 	@lein with-profile +test eastwood "{:linters [:unused-namespaces :wrong-ns-form] :namespaces [:source-paths]}"
 
-check: kibit
+unit:
+	@lein with-profile +test,-dev test :unit
+
+system:
+	@lein with-profile +test,-dev test :system
+
+integration:
+	@lein with-profile +test,-dev test :integration
+
+all-tests:
 	@lein with-profile +test,-dev test :all
 
-check-all: lint
-	@lein with-profile +test,-dev test :all
+check: kibit all-tests
+
+check-all: lint all-tests
 
 check-no-lint:
 	@lein with-profile +test,-dev test :all

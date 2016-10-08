@@ -3,17 +3,17 @@
             [meson.client :as client]
             [meson.scheduler :as scheduler]))
 
-(deftest ->client
+(deftest ^:unit ->client
   (let [c (scheduler/->client)]
     (is (= (:base-path c) "/api"))
     (is (= (:version c) "1"))
     (is (= (get-in c [:options :debug]) true))))
 
-(deftest get-context
+(deftest ^:unit get-context
   (let [c (scheduler/->client)]
     (is (= (client/get-context c) "/api/v1/scheduler"))))
 
-(deftest get-url
+(deftest ^:unit get-url
   (let [c (scheduler/->client)]
     (is (= (client/get-url c) "http://localhost:5050/api/v1/scheduler")))
   (let [c (scheduler/->client {:master "myhost:8080"})]

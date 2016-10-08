@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [meson.client :as client]))
 
-(deftest user-agent
+(deftest ^:unit user-agent
   (is
     (not
       (nil?
@@ -10,17 +10,17 @@
           #"Meson REST Client/.* \(Clojure .*; Java .*\) \(\+https://.*\)"
           client/user-agent)))))
 
-(deftest ->base-client
+(deftest ^:unit ->base-client
   (let [c (client/->base-client)]
     (is (= (:base-path c) "/api"))
     (is (= (:version c) "1"))
     (is (= (get-in c [:options :debug]) true))))
 
-(deftest get-context
+(deftest ^:unit get-context
   (let [c (client/->base-client)]
     (is (= (client/get-context c) "/api/v1"))))
 
-(deftest get-url
+(deftest ^:unit get-url
   (let [c (client/->base-client {:master "myhost:8080"})]
     (is (= (client/get-url c) "http://myhost:8080/api/v1"))))
 
