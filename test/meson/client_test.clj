@@ -3,10 +3,12 @@
             [meson.client :as client]))
 
 (deftest user-agent
-  (is (= client/user-agent
-         (str "Meson REST Client/0.1.0-SNAPSHOT "
-              "(Clojure 1.8.0; Java 1.8.0_45-internal) "
-              "(+https://github.com/oubiwann/meson)"))))
+  (is
+    (not
+      (nil?
+        (re-matches
+          #"Meson REST Client/.* \(Clojure .*; Java .*\) \(\+https://.*\)"
+          client/user-agent)))))
 
 (deftest ->base-client
   (let [c (client/->base-client)]
@@ -21,3 +23,4 @@
 (deftest get-url
   (let [c (client/->base-client {:master "myhost:8080"})]
     (is (= (client/get-url c) "http://myhost:8080/api/v1"))))
+

@@ -2,15 +2,12 @@
   (:require [clojusc.twig :as logger]
             [meson.const :as const]))
 
-(def user-agent (str "Meson REST Client/"
-                     const/client-version
-                     " (Clojure "
-                     const/clj-version
-                     "; Java "
-                     const/java-version
-                     ") (+"
-                     const/project-url
-                     ")"))
+(def user-agent
+  (format "Meson REST Client/%s (Clojure %s; Java %s) (+%s)"
+          const/client-version
+          const/clj-version
+          const/java-version
+          const/project-url))
 
 (def fields
   "Fields are maintained separately from the record so that they may be
