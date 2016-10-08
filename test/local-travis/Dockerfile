@@ -1,5 +1,5 @@
 FROM quay.io/travisci/travis-jvm
-MAINTAINER Clojure-Science / Clojure-Aided Enrichment Center <https://github.com/clojusc>
+MAINTAINER Clojure-Science / CAEC <https://github.com/clojusc>
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -17,28 +17,45 @@ RUN apt-get update -y
 
 # Remove problematic software that prevents fully-automated upgrade
 RUN apt-get remove \
-  postgresql-9.1 postgresql-9.1-postgis-2.2-scripts postgresql-9.1-postgis-scripts postgresql-client-9.1 \ 
-  postgresql-9.2 postgresql-9.2-postgis-2.1 postgresql-9.2-postgis-2.2-scripts postgresql-9.2-postgis-2.3 postgresql-9.2-postgis-2.3-scripts postgresql-9.2-postgis-scripts postgresql-client-9.2 \
-  postgresql-9.3 postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-2.3 postgresql-9.3-postgis-2.3-scripts postgresql-9.3-postgis-scripts postgresql-client-9.3
+        postgresql-9.1 postgresql-9.1-postgis-2.2-scripts \
+        postgresql-9.1-postgis-scripts postgresql-client-9.1 \
+        postgresql-9.2 postgresql-9.2-postgis-2.1 \
+        postgresql-9.2-postgis-2.2-scripts postgresql-9.2-postgis-2.3 \
+        postgresql-9.2-postgis-2.3-scripts postgresql-9.2-postgis-scripts \
+        postgresql-client-9.2 \
+        postgresql-9.3 postgresql-9.3-postgis-2.1 \
+        postgresql-9.3-postgis-2.3 postgresql-9.3-postgis-2.3-scripts \
+        postgresql-9.3-postgis-scripts postgresql-client-9.3
 RUN apt-get remove sudo policykit-1 colord
 RUN apt-get autoremove
 RUN apt-get install -y g++-4.6 libstdc++6-4.6-dev
-#RUN apt-get dist-upgrade -y
-#RUN apt-get install --only-upgrade -y libstdc++6 libc6 libgcc1
 
 # Mesos needs libs that aren in 14.04 but not in 12.04, so upgrade the release
 RUN apt-cache policy update-manager-core
 RUN apt-get install update-manager-core
 RUN do-release-upgrade -f DistUpgradeViewNonInteractive && \
-  echo "Successfully upgraded to 14.04." || \
-  echo "There were issues upgrading to 14.04." ; \
-  echo "Manual intervention may be needed."
+        echo "Successfully upgraded to 14.04." || \
+        echo "There were issues upgrading to 14.04." ; \
+        echo "Manual intervention may be needed."
 
-# Install Mesos
-RUN git clone https://github.com/clojusc/meson.git
-RUN cd meson && \
-        bash test/install_deps.sh && \
-        bash test/start_mesos.sh && \
-        cd ../
+# Install Mesos and Meson
+ENV BUILDS /home/travis/builds
+ENV MESON /home/travis/builds/meson
+ENV LEIN_ROOT true
 
-CMD ["make", "local-travis-check"]
+RUN echo "\n\n*** Clone Meson repo ***\n\n"
+RUN cd $BUILDS && \
+        git clone https://github.com/clojusc/meson.git
+RUN echo "\n\n*** Install Meson deps ***\n\n"
+RUN cd $MESON && \
+        bash test/install_deps.sh
+RUN echo "\n\n*** Start Mesos ***\n\n"
+RUN cd $MESON && \
+        bash test/start_mesos.sh
+RUN echo "\n\n*** Preparing Meson for tests ***\n\n"
+RUN cd $MESON && \
+        $MESON/test/local-travis/guest-cmd-prep.sh
+
+# Copy latest code into the image
+COPY src/meson/* $MESON/src/meson/
+CMD "$MESON/test/local-travis/guest-cmd.sh"

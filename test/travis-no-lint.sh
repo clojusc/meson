@@ -2,4 +2,4 @@
 
 lein compile
 lein uberjar
-make check
+make check-no-lint

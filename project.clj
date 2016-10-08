@@ -25,6 +25,9 @@
     :uber {
       :aot :all}
     :test {
+      :dependencies [
+        [jonase/eastwood "0.2.3" :exclusions [org.clojure/clojure]]
+        [lein-kibit "0.1.2" :exclusions [org.clojure/clojure]]]
       :plugins [
         [jonase/eastwood "0.2.3" :exclusions [org.clojure/clojure]]
         [lein-kibit "0.1.2" :exclusions [org.clojure/clojure]]]
@@ -36,4 +39,6 @@
     :dev {
       :source-paths ["dev-resources/src"]
       :repl-options {:init-ns meson.debug}
-      :dependencies [[org.clojure/tools.namespace "0.2.11"]]}})
+      :dependencies [
+        [org.clojure/tools.namespace "0.2.11"
+         :exclusions [org.clojure/clojure]]]}})

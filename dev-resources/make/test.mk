@@ -11,6 +11,9 @@ lint-ns:
 check: lint
 	@lein with-profile +test,-dev test :all
 
+check-no-lint:
+	@lein with-profile +test,-dev test :all
+
 travis-check:
 	bash ./test/travis.sh
 
@@ -18,7 +21,14 @@ local-travis-check:
 	bash ./test/local-travis/check.sh
 	bash ./test/travis.sh
 
+local-travis-check-no-lint:
+	bash ./test/local-travis/check.sh
+	bash ./test/travis-no-lint.sh
+
+local-travis: TEST_DIR = ./test/local-travis
+local-travis: TAG = meson/test
 local-travis:
-	bash ./test/local-travis/setup.sh
-	docker build -t meson/test ./test/local-travis
-	docker run -t meson/test
+	cp -r src $(TEST_DIR)/
+	bash $(TEST_DIR)/setup.sh
+	docker build -t $(TAG) $(TEST_DIR)/
+	docker run -t $(TAG)
