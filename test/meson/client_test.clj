@@ -2,6 +2,8 @@
   (:require [clojure.test :refer :all]
             [meson.client :as client]))
 
+;;; Unit Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (deftest ^:unit user-agent
   (is
     (not
@@ -24,3 +26,10 @@
   (let [c (client/->base-client {:master "myhost:8080"})]
     (is (= (client/get-url c) "http://myhost:8080/api/v1"))))
 
+;;; Integration Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD
+
+;;; System Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD

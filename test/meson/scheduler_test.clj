@@ -3,6 +3,8 @@
             [meson.client :as client]
             [meson.scheduler :as scheduler]))
 
+;;; Unit Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (deftest ^:unit ->client
   (let [c (scheduler/->client)]
     (is (= (:base-path c) "/api"))
@@ -18,3 +20,11 @@
     (is (= (client/get-url c) "http://localhost:5050/api/v1/scheduler")))
   (let [c (scheduler/->client {:master "myhost:8080"})]
     (is (= (client/get-url c) "http://myhost:8080/api/v1/scheduler"))))
+
+;;; Integration Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD
+
+;;; System Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD
