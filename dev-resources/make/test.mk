@@ -15,11 +15,11 @@ lint-ns:
 unit:
 	@lein with-profile +test,-dev test :unit
 
-system:
-	@lein with-profile +test,-dev test :system
-
 integration:
 	@lein with-profile +test,-dev test :integration
+
+system:
+	@lein with-profile +test,-dev test :system
 
 all-tests:
 	@lein with-profile +test,-dev test :all
