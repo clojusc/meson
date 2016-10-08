@@ -43,13 +43,24 @@ ENV BUILDS /home/travis/builds
 ENV MESON /home/travis/builds/meson
 ENV LEIN_ROOT true
 
-RUN echo "cache bust!"
+# XXX before merge, remove next line
+RUN echo "cache bust!!!!!"
+RUN echo "\n\n*** Clone Meson repo ***\n\n"
 RUN cd $BUILDS && \
         git clone https://github.com/clojusc/meson.git
+# XXX before merge, remove next line
 RUN cd $MESON && \
-        git checkout issue/38/local-travis && \
-        bash test/install_deps.sh && \
-        bash test/start_mesos.sh && \
-        lein compile
+        git checkout issue/38/local-travis
+RUN echo "\n\n*** Install Meson deps ***\n\n"
+RUN cd $MESON && \
+        bash test/install_deps.sh
+RUN echo "\n\n*** Start Mesos ***\n\n"
+RUN cd $MESON && \
+        bash test/start_mesos.sh
+RUN echo "\n\n*** Preparing Meson for tests ***\n\n"
+RUN cd $MESON && \
+        $MESON/test/local-travis/guest-cmd-prep.sh
 
-CMD ["$MESON/test/local-travis/guest-cmd.sh"]
+# Copy latest code into the image
+COPY srs/meson/* $MESON/src/meson/
+CMD "$MESON/test/local-travis/guest-cmd.sh"
