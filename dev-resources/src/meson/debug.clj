@@ -13,8 +13,9 @@
             [meson.client.master.scheduler :as scheduler]
             [meson.core :as meson]
             [meson.http :as http]
-            [meson.types.json :as j-types]
-            [meson.types.protobuf :as p-types]
+            [meson.protobuf :as protobuf]
+            [meson.protobuf.mesos :as pb-mesos]
+            [meson.protobuf.scheduler :as pb-scheduler]
             [meson.util :as util]))
 
 ;;; Aliases

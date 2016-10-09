@@ -2,8 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [clj-http.client :as httpc]
             [clojusc.twig :refer [pprint]]
-            [meson.types.json :as j-types]
-            [meson.types.protobuf :as p-types]
+            [meson.protobuf.mesos :as pb-mesos]
             [meson.util :as util])
   (:refer-clojure :exclude [get]))
 
@@ -11,8 +10,8 @@
   ""
   [content-type record-name body]
   (case content-type
-    "application/json" (j-types/map->json record-name body)
-    "application/x-protobuf" (p-types/->map record-name body)))
+    "application/json" (pb-mesos/map->json record-name body)
+    "application/x-protobuf" (pb-mesos/->map record-name body)))
 
 (defn merge-options
   ""

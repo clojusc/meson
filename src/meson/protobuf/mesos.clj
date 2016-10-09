@@ -1,7 +1,9 @@
-(ns meson.types.protobuf
-  "Utility functions to convert to and from mesos types."
-  (:require [clojure.walk :as walk]
-            [meson.util :refer [case-enum]])
+(ns meson.protobuf.mesos
+  "Utility functions to convert to and from mesos protobuf types."
+  (:require [clojure.data.json :as json]
+            [clojure.walk :as walk]
+            [meson.protobuf :refer [Serializable data->pb pb->data]]
+            [meson.util :refer [case-enum] :as util])
   (:import org.apache.mesos.Protos$Status
            org.apache.mesos.Protos$FrameworkID
            org.apache.mesos.Protos$OfferID
@@ -76,19 +78,7 @@
            org.apache.mesos.Protos$Label
            org.apache.mesos.Protos$Labels))
 
-;; Our two exported signatures: data->pb and pb->data
-
-(defprotocol Serializable
-  "Interface to convert from clojure data to mesos protobuf
-   payloads."
-  (data->pb [this]))
-
-(defmulti pb->data
-  "Open protocol to convert from mesos protobuf to clojure"
-  class)
-
 (declare ->pb)
-
 
 ;; Status
 ;; ======
@@ -1558,29 +1548,6 @@
 ;; keywords, as well as Scalars from their value.
 
 (extend-protocol Serializable
-  java.lang.Integer
-  (data->pb [this]
-    (-> (Protos$Value$Scalar/newBuilder)
-        (.setValue (double this))
-        (.build)))
-  java.lang.Long
-  (data->pb [this]
-    (-> (Protos$Value$Scalar/newBuilder)
-        (.setValue (double this))
-        (.build)))
-  java.lang.Double
-  (data->pb [this]
-    (-> (Protos$Value$Scalar/newBuilder)
-        (.setValue this)
-        (.build)))
-  clojure.lang.PersistentHashSet
-  (data->pb [this]
-    (-> (Protos$Value$Set/newBuilder)
-        (.addAllItem (seq this))
-        (.build)))
-  java.lang.String
-  (data->pb [this]
-    (-> (Protos$Value$Text/newBuilder) (.setValue this) (.build)))
   clojure.lang.Keyword
   (data->pb [this]
     (case this
@@ -1667,12 +1634,6 @@
       ;; default
       nil)))
 
-;; By default, yield the original payload.
-
-(defmethod pb->data :default
-  [this]
-  this)
-
 (defn ->pb
   [map-type this]
 
@@ -1690,6 +1651,8 @@
        :HealthCheckHTTP     (map->HealthCheckHTTP this)
        :HealthCheck         (map->HealthCheck this)
        :URI                 (map->URI this)
+       :Label               (map->Label this)
+       :Labels              (map->Labels this)
        :CommandInfo         (map->CommandInfo this)
        :ExecutorInfo        (map->ExecutorInfo this)
        :MasterInfo          (map->MasterInfo this)
@@ -1730,3 +1693,21 @@
        (walk/postwalk
          #(if (map? %) (into {} %) %))))
 
+(defn ->round-trip-map
+  ""
+  [^clojure.lang.Keyword record-name
+   ^clojure.lang.PersistentArrayMap data
+   & {:keys [drop-keys]}]
+  (as-> data val
+        (->map record-name val)
+        (apply dissoc val drop-keys)
+        (hash-map (util/camel->under record-name) val)))
+
+(defn map->json
+  "Given a type's record name (as a keyword) and a map for the type's data,
+  return a nested JSON string containing the passed data and any default
+  values provided by Mesos."
+  [^clojure.lang.Keyword record-name ^clojure.lang.PersistentArrayMap data]
+  (->> data
+       (->round-trip-map record-name)
+       (json/write-str)))

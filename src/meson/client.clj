@@ -26,8 +26,10 @@
    :event-conn nil
    :cmd-conn nil
    :options {
-     :content-type "application/json" ; or application/x-protobuf
-     :accept "application/json"
+     ;:content-type "application/json" ; or application/x-protobuf
+     ;:accept "application/json"
+     :content-type "application/x-protobuf" ; or application/x-protobuf
+     :accept "application/x-protobuf"
      :debug true
      :debug-body true
      :throw-entire-message? true

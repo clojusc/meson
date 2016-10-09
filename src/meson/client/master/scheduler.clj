@@ -3,7 +3,7 @@
             [meson.client :as client]
             [meson.client.master :as master]
             [meson.http :as http]
-            [meson.types.json :as j-types])
+            [meson.protobuf.mesos :as mesos])
   (:import [meson.client.ClientAPI]))
 
 (def client-fields
@@ -45,7 +45,7 @@
          ""
          :body (json/write-str
                  {:type :SUBSCRIBE
-                  :subscribe (j-types/->map :FrameworkInfo data)})
+                  :subscribe (mesos/->map :FrameworkInfo data)})
          :options {}))}));{:as :stream}))})
 
 (extend SchedulerClient SchedulerAPI client-behaviour)
