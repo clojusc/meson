@@ -1,7 +1,9 @@
 (ns meson.http
-  (:require [clojure.tools.logging :as log]
+  (:require [clojure.data.json :as json]
+            [clojure.tools.logging :as log]
             [clj-http.client :as httpc]
             [clojusc.twig :refer [pprint]]
+            [meson.client.base :as base]
             [meson.protobuf.mesos :as pb-mesos]
             [meson.util :as util])
   (:refer-clojure :exclude [get]))
@@ -22,12 +24,22 @@
          (into opts)
          (into (:options c)))))
 
+(defn parse-response
+  ""
+  [{:keys [headers status body status-only] :as response}]
+  (case (headers "Content-Type")
+    "application/json" (json/read-str body :key-fn keyword)
+    (if status-only
+      status
+      response)))
+
 (defn get
   ""
-  [c url & {:keys [opts]}]
-  (httpc/get
-    url
-    (:options (merge-options c opts))))
+  [c path & {:keys [opts status-only] :as kwargs}]
+  (-> (base/get-url c path)
+      (httpc/get (:options (merge-options c opts)))
+      (into {:status-only status-only})
+      (parse-response)))
 
 (defn post
   ""

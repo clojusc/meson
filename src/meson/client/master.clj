@@ -1,41 +1,82 @@
 (ns meson.client.master
   (:require [clojusc.twig :as logger]
-            [meson.client :as client]))
+            [meson.client :as client]
+            [meson.client.impl.master :as master]
+            [meson.client.impl.config :as config]
+            [meson.client.impl.debug :as debug]
+            [meson.client.impl.files :as files]
+            [meson.client.impl.health :as health]
+            [meson.client.protocols.master :refer [IMaster]]
+            [meson.client.protocols.common :refer
+             [IConfig ; version, flags
+              IDebug  ; logging profiler
+              IFiles  ; all files methods
+              IHealth ; metrics, system, health, monitor, metrics, state
+              ]]
+            [potemkin])
+  (:refer-clojure :exclude [read]))
 
 (def client-fields
   (merge
     client/fields
     {:master "localhost:5050"}))
 
-(defprotocol MasterAPI
-  "The scheduler interacts with Mesos via the /api/v1/scheduler master
-  endpoint. This endpoint accepts HTTP POST requests with data encoded as JSON,
-  `Content-Type: application/json`, or binary Protobuf,
-  `Content-Type: application/x-protobuf`."
-  (get-context [this]
-    "Get the context for this client, calculated using `:base-path` and
-    `:version`.")
-  (get-url [this path]
-    "Get the context-based url for the client.")
-  (get-version [this]
-    "Get the client version.")
-  (subscribe [this data]
-    "This is the first step in the communication process between the
-    scheduler and the master. This is also to be considered as subscription
-    to the “/scheduler” events stream."))
+(defrecord MesonMaster [])
 
-(defrecord MasterClient [])
+(extend MesonMaster IMaster master/behaviour)
+(extend MesonMaster IConfig config/behaviour)
+(extend MesonMaster IDebug debug/behaviour)
+(extend MesonMaster IFiles files/behaviour)
+(extend MesonMaster IHealth health/behaviour)
 
-(extend MasterClient MasterAPI client/client-behaviour)
-
-(defn ->client
+(defn create
   "A factory for the Mater client which takes a map as an arguement. If no
   map is provided, the default value of `master/client-fields` is passed."
   ([]
-    (->client client-fields))
+    (create client-fields))
   ([fields]
     (->> fields
          (into client-fields)
          (client/check-fields)
          (client/add-host-port (:master fields))
-         (map->MasterClient))))
+         (map->MesonMaster))))
+
+(potemkin/import-vars
+  [meson.client.impl.master
+    bring-down-machines
+    bring-up-machines
+    create-volumes
+    destroy-volumes
+    get-agents
+    get-frameworks
+    get-maintenance-schedule
+    get-maintenance-status
+    get-quota
+    get-registry
+    get-roles
+    get-state-summary
+    get-tasks
+    redirect
+    remove-quota
+    reserve
+    set-quota
+    teardown-framework
+    unreserve
+    update-maintenance-scheduler
+    update-role-weights]
+  [meson.client.impl.config
+    get-version
+    get-flags]
+  [meson.client.impl.debug
+    start-profiler
+    stop-profiler]
+  [meson.client.impl.files
+    browse
+    debug
+    download
+    read]
+  [meson.client.impl.health
+    get-health
+    get-metrics
+    get-state
+    get-system-stats])

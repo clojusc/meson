@@ -22,8 +22,6 @@
     `:version`.")
   (get-url [this path]
     "Get the context-based url for the client.")
-  (get-version [this]
-    "Get the client version.")
   (subscribe [this data]
     "This is the first step in the communication process between the
     scheduler and the master. This is also to be considered as subscription
