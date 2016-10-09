@@ -2,7 +2,6 @@
   (:require [clojure.tools.logging :as log]
             [clj-http.client :as httpc]
             [clojusc.twig :refer [pprint]]
-            [meson.client :as client]
             [meson.types.json :as j-types]
             [meson.types.protobuf :as p-types]
             [meson.util :as util])
@@ -26,16 +25,16 @@
 
 (defn get
   ""
-  [c & {:keys [opts]}]
+  [c url & {:keys [opts]}]
   (httpc/get
-    (client/get-url c)
-    :options (merge-options c opts)))
+    url
+    (:options (merge-options c opts))))
 
 (defn post
   ""
-  [c & {:keys [body opts]}]
+  [c url & {:keys [body opts]}]
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (httpc/post
-      (client/get-url c)
+      url
       options)))

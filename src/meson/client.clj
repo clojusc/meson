@@ -1,6 +1,9 @@
 (ns meson.client
-  (:require [clojusc.twig :as logger]
-            [meson.const :as const]))
+  (:require [clojure.string :as string]
+            [clojusc.twig :as logger]
+            [meson.client.base :as base]
+            [meson.const :as const]
+            [meson.http :as http]))
 
 (def user-agent
   (format "Meson REST Client/%s (Clojure %s; Java %s) (+%s)"
@@ -11,9 +14,12 @@
 
 (def fields
   "Fields are maintained separately from the record so that they may be
-   re-used by concrete clients (e.g., Scheduler and Executor clients)."
-  {:master nil
-   :base-path "/api"
+  re-used by concrete clients (e.g., Scheduler and Executor clients)."
+  {:host nil
+   :port nil
+   :master nil
+   :agent nil
+   :base-path "/"
    :endpoint ""
    :version "1"
    :scheme "http"
@@ -34,16 +40,19 @@
   (get-context [this]
     "Get the context for this client, calculated using `:base-path` and
     `:version`.")
-  (get-url [this]
-    "Get the context-based url for the client."))
+  (get-url [this path]
+    "Get the context-based url for the client.")
+  (get-version [this]
+    "Get the client version."))
 
 (defrecord Client [])
 
 (def client-behaviour
-  {:get-context (fn [this]
-    (format "%s/v%s%s" (:base-path this) (:version this) (:endpoint this)))
-   :get-url (fn [this]
-    (format "%s://%s%s" (:scheme this) (:master this) (get-context this)))})
+  {;; XXX move this to master?
+   :get-context #'base/get-context
+   ;; XXX rename to get-context-url?
+   :get-url #'base/get-url
+   :get-version #'base/get-version})
 
 (extend Client ClientAPI client-behaviour)
 
@@ -56,10 +65,40 @@
       (logger/set-level! 'meson :debug))
   fields)
 
+(defn add-host
+  ""
+  [host-port fields]
+  (if host-port
+    (into fields {:host (first (string/split host-port #":" 2))})
+    fields))
+
+(defn add-port
+  ""
+  [host-port fields]
+  (if host-port
+    (into fields {:port (second (string/split host-port #":" 2))})
+    fields))
+
+(defn add-host-port
+  ""
+  [host-port fields]
+  (->> fields
+       (add-host host-port)
+       (add-port host-port)))
+
+(defn get-host-port
+  ""
+  [fields]
+  (if-let [master (:master fields)]
+    (add-host-port master fields)
+    (if-let [agent (:agent fields)]
+      (add-host-port agent fields)
+      fields)))
+
 (defn ->base-client
-  "Unlike `->BaseClient`, this factory function takes a map of the client
+  "Unlike `->ClientAPI`, this factory function takes a map of the client
   fields as a single argument. As such, it is essentially an alias for
-  `map->BaseClient`. An important difference is that if no argument is given,
+  `map->ClientAPI`. An important difference is that if no argument is given,
   the default base client map, `base-client-fields`, is used."
   ([]
     (->base-client {}))
@@ -67,4 +106,5 @@
     (->> fs
          (into fields)
          (check-fields)
+         (get-host-port)
          (map->Client))))
