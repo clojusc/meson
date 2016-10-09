@@ -14,8 +14,8 @@
 
 (deftest ^:integration get-version
   (let [c (master/->client {:master "127.0.0.1:5050"})]
-    (is (= (sort (keys (master/get-version c)))
-           [:build_date :build_time :build_user :version]))))
+    (is (= (:version (master/get-version c))
+           "1.0.1"))))
 
 ;;; System Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
