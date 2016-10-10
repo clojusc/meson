@@ -8,11 +8,8 @@
             [meson.client.impl.health :as health]
             [meson.client.protocols.agent :refer [IAgent]]
             [meson.client.protocols.common :refer
-             [IConfig ; version, flags
-              IDebug  ; logging profiler
-              IFiles  ; all files methods
-              IHealth ; metrics, system, health, monitor, metrics, state
-              ]])
+              [IConfig IDebug IFiles IHealth]]
+            [potemkin])
   (:refer-clojure :exclude [read]))
 
 (def client-fields
@@ -27,11 +24,6 @@
 (extend MesonAgent IDebug debug/behaviour)
 (extend MesonAgent IFiles files/behaviour)
 (extend MesonAgent IHealth health/behaviour)
-
-(defn create
-  ""
-  []
-  (->MesonAgent))
 
 (defn create
   "A factory for the Agent client which takes a map as an arguement. If no

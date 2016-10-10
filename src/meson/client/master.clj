@@ -8,11 +8,7 @@
             [meson.client.impl.health :as health]
             [meson.client.protocols.master :refer [IMaster]]
             [meson.client.protocols.common :refer
-             [IConfig ; version, flags
-              IDebug  ; logging profiler
-              IFiles  ; all files methods
-              IHealth ; metrics, system, health, monitor, metrics, state
-              ]]
+              [IConfig IDebug IFiles IHealth]]
             [potemkin])
   (:refer-clojure :exclude [read]))
 
