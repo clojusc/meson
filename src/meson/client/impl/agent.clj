@@ -1,4 +1,4 @@
-(ns meson.client.imple.agent)
+(ns meson.client.impl.agent)
 
 (defn get-container-status [this]
   :not-yet-implemented)

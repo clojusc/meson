@@ -1,5 +1,6 @@
 (ns meson.client.agent
   (:require [clojusc.twig :as logger]
+            [meson.client :as client]
             [meson.client.impl.agent :as agent]
             [meson.client.impl.config :as config]
             [meson.client.impl.debug :as debug]
@@ -14,6 +15,11 @@
               ]])
   (:refer-clojure :exclude [read]))
 
+(def client-fields
+  (merge
+    client/fields
+    {:agent "localhost:5051"}))
+
 (defrecord MesonAgent [])
 
 (extend MesonAgent IAgent agent/behaviour)
@@ -26,6 +32,18 @@
   ""
   []
   (->MesonAgent))
+
+(defn create
+  "A factory for the Agent client which takes a map as an arguement. If no
+  map is provided, the default value of `agent/client-fields` is passed."
+  ([]
+    (create client-fields))
+  ([fields]
+    (->> fields
+         (into client-fields)
+         (client/check-fields)
+         (client/add-host-port (:agent fields))
+         (map->MesonAgent))))
 
 (potemkin/import-vars
   [meson.client.impl.agent
