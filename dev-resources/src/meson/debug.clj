@@ -10,6 +10,8 @@
             [clojure.data.codec.base64 :as b64]
             ;; meson
             [meson.client :as client]
+            [meson.client.impl.master.scheduler :as impl-sched]
+            [meson.client.master :as master]
             [meson.client.master.scheduler :as scheduler]
             [meson.core :as meson]
             [meson.http :as http]

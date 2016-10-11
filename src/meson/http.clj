@@ -43,9 +43,9 @@
 
 (defn post
   ""
-  [c url & {:keys [body opts]}]
+  [c path & {:keys [body opts]}]
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (httpc/post
-      url
+      (base/get-url c path)
       options)))

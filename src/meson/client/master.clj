@@ -2,11 +2,13 @@
   (:require [clojusc.twig :as logger]
             [meson.client :as client]
             [meson.client.impl.master :as master]
+            [meson.client.impl.master.scheduler :as scheduler]
             [meson.client.impl.config :as config]
             [meson.client.impl.debug :as debug]
             [meson.client.impl.files :as files]
             [meson.client.impl.health :as health]
             [meson.client.protocols.master :refer [IMaster]]
+            [meson.client.protocols.master.scheduler :refer [IScheduler]]
             [meson.client.protocols.common :refer
               [IConfig IDebug IFiles IHealth]]
             [potemkin])
@@ -20,6 +22,7 @@
 (defrecord MesonMaster [])
 
 (extend MesonMaster IMaster master/behaviour)
+(extend MesonMaster IScheduler scheduler/behaviour)
 (extend MesonMaster IConfig config/behaviour)
 (extend MesonMaster IDebug debug/behaviour)
 (extend MesonMaster IFiles files/behaviour)
@@ -60,6 +63,18 @@
     unreserve
     update-maintenance-scheduler
     update-role-weights]
+  [meson.client.impl.master.scheduler
+    accept
+    acknowledge
+    decline
+    kill-task
+    message
+    reconcile
+    request
+    revive
+    shutdown-executor
+    subscribe
+    teardown]
   [meson.client.impl.config
     get-version
     get-flags]
