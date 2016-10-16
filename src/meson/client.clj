@@ -26,8 +26,10 @@
    :event-conn nil
    :cmd-conn nil
    :options {
-     :content-type "application/json" ; or application/x-protobuf
-     :accept "application/json"
+     ;:content-type "application/json" ; or application/x-protobuf
+     ;:accept "application/json"
+     :content-type "application/x-protobuf" ; or application/x-protobuf
+     :accept "application/x-protobuf"
      :debug true
      :debug-body true
      :throw-entire-message? true
@@ -41,9 +43,7 @@
     "Get the context for this client, calculated using `:base-path` and
     `:version`.")
   (get-url [this path]
-    "Get the context-based url for the client.")
-  (get-version [this]
-    "Get the client version."))
+    "Get the context-based url for the client."))
 
 (defrecord Client [])
 
@@ -51,8 +51,7 @@
   {;; XXX move this to master?
    :get-context #'base/get-context
    ;; XXX rename to get-context-url?
-   :get-url #'base/get-url
-   :get-version #'base/get-version})
+   :get-url #'base/get-url})
 
 (extend Client ClientAPI client-behaviour)
 

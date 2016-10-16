@@ -3,7 +3,7 @@
             [meson.client :as client]
             [meson.client.master :as master]
             [meson.http :as http]
-            [meson.types.json :as j-types])
+            [meson.protobuf.mesos :as mesos])
   (:import [meson.client.ClientAPI]))
 
 (def client-fields
@@ -22,8 +22,6 @@
     `:version`.")
   (get-url [this path]
     "Get the context-based url for the client.")
-  (get-version [this]
-    "Get the client version.")
   (subscribe [this data]
     "This is the first step in the communication process between the
     scheduler and the master. This is also to be considered as subscription
@@ -45,7 +43,7 @@
          ""
          :body (json/write-str
                  {:type :SUBSCRIBE
-                  :subscribe (j-types/->map :FrameworkInfo data)})
+                  :subscribe (mesos/->map :FrameworkInfo data)})
          :options {}))}));{:as :stream}))})
 
 (extend SchedulerClient SchedulerAPI client-behaviour)

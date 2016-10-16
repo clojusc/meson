@@ -58,4 +58,5 @@ RUN cd $MESON && \
 
 # Copy latest code into the image
 COPY src/meson/* $MESON/src/meson/
+COPY test/meson/* $MESON/test/meson/
 CMD "$MESON/test/local-travis/guest-cmd.sh"

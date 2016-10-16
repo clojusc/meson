@@ -4,12 +4,14 @@
   :license {:name "Apache License, Version 2.0"
             :url "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/core.async "0.2.391"]
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.apache.mesos/mesos "1.0.1"]
                  [clj-http "3.3.0"]
                  [clojusc/twig "0.2.6"]
-                 [leiningen-core "2.7.1"]]
+                 [leiningen-core "2.7.1"]
+                 [potemkin "0.4.3"]]
   :plugins [[lein-codox "0.10.0"]]
   :codox {
     :project {
