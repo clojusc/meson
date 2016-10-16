@@ -1,6 +1,7 @@
 (ns meson.util
   "Some convenience/utility functions used in the rest of Mesomatic."
-  (:require [clojure.string :as string]))
+  (:require [clojure.data.json :as json]
+            [clojure.string :as string]))
 
 (defn camel->under
   "From Emerick, Grande, Carper 2012 p.70."
@@ -23,3 +24,37 @@
                   (partition 2 clauses))
           (when (odd? (count clauses))
             (list (last clauses)))))))
+
+(defn newline?
+  ""
+  [byte]
+  (= (char byte) \newline))
+
+(defn fill
+  ""
+  [array val]
+  (dotimes [n (alength array)]
+    (aset-byte array n val)))
+
+(defn bytes->str
+  ""
+  [bytes]
+  (->> bytes
+       (map #(char (bit-and % 255)))
+       (apply str)
+       (.trim)))
+
+(defn bytes->int
+  ""
+  [bytes]
+  (-> bytes
+      (bytes->str)
+      (Integer/parseInt)))
+
+(defn bytes->json
+  ""
+  [bytes]
+  (-> bytes
+      (bytes->str)
+      (json/read-str :key-fn keyword)
+      (update :type #(keyword (string/lower-case %)))))
