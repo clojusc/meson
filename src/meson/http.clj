@@ -36,6 +36,15 @@
       status
       response)))
 
+(defn delete
+  ""
+  [c path & {:keys [body opts]}]
+  (let [options (merge-options c opts {:body body})]
+    (log/debug "Options:" (pprint options))
+    (httpc/delete
+      (base/get-url c path)
+      options)))
+
 (defn get
   ""
   [c path & {:keys [opts status-only] :as kwargs}]
@@ -50,5 +59,14 @@
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (httpc/post
+      (base/get-url c path)
+      options)))
+
+(defn put
+  ""
+  [c path & {:keys [body opts]}]
+  (let [options (merge-options c opts {:body body})]
+    (log/debug "Options:" (pprint options))
+    (httpc/put
       (base/get-url c path)
       options)))
