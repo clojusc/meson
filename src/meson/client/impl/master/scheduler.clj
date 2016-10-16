@@ -1,6 +1,8 @@
 (ns meson.client.impl.master.scheduler
-  (:require [clojure.data.json :as json]
+  (:require [clj-http.conn-mgr :as http-conn-mgr]
+            [clojure.data.json :as json]
             [clojure.string :as string]
+            [clojure.tools.logging :as log]
             [meson.http :as http]))
 
 (defn convert-upper
@@ -14,6 +16,23 @@
   (-> type
       (name)
       (string/lower-case)))
+
+(defn start
+  ""
+  ([this]
+    (start this {}))
+  ([this opts]
+    (log/debug "Starting connection manager for the scheduler ...")
+    (->> opts
+         (into {:timeout 10 :threads 4})
+         (http-conn-mgr/make-reusable-conn-manager)
+         (assoc this :conn-mgr))))
+
+(defn stop
+  ""
+  [this]
+  (log/debug "Stopping connection manager for the scheduler ...")
+  (http-conn-mgr/shutdown-manager (:conn-mgr this)))
 
 (defn call
   ([this type]
@@ -95,9 +114,11 @@
       :subscribe
       payload
       content-type
-      {:streaming? true
+      {:as :stream
+       :streaming? true
        :chunked? true
-       :connection "keep-alive"})))
+       :connection "keep-alive"
+       :connection-manager (:conn-mgr this)})))
 
 (defn teardown
   ([this payload]
@@ -106,14 +127,14 @@
     :not-yet-implemented))
 
 (def behaviour
-  {:subscribe subscribe
-   :teardown teardown
-   :accept accept
-   :decline decline
-   :revive revive
-   :kill-task kill-task
-   :shutdown-executor shutdown-executor
+  {:accept accept
    :acknowledge acknowledge
-   :reconcile reconcile
+   :decline decline
+   :kill-task kill-task
    :message message
-   :request request})
+   :reconcile reconcile
+   :request request
+   :revive revive
+   :subscribe subscribe
+   :shutdown-executor shutdown-executor
+   :teardown teardown})
