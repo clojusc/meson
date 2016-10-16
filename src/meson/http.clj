@@ -8,12 +8,15 @@
             [meson.util :as util])
   (:refer-clojure :exclude [get]))
 
+(def json-content-type "application/json")
+(def protobuf-content-type "application/x-protobuf")
+
 (defn convert-data
   ""
   [content-type record-name body]
   (case content-type
-    "application/json" (pb-mesos/map->json record-name body)
-    "application/x-protobuf" (pb-mesos/->map record-name body)))
+    json-content-type (pb-mesos/map->json record-name body)
+    protobuf-content-type (pb-mesos/->map record-name body)))
 
 (defn merge-options
   ""
