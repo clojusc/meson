@@ -4,7 +4,7 @@
   :license {:name "Apache License, Version 2.0"
             :url "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/core.async "0.2.391"]
+                 [org.clojure/core.async "0.2.395"]
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.apache.mesos/mesos "1.0.1"]
@@ -12,17 +12,6 @@
                  [clojusc/twig "0.2.6"]
                  [leiningen-core "2.7.1"]
                  [potemkin "0.4.3"]]
-  :plugins [[lein-codox "0.10.0"]]
-  :codox {
-    :project {
-      :name "meson"
-      :description "Clojure Client Library for the Mesos HTTP API"}
-    :namespaces [#"^meson\.(?!dev)"]
-    :output-path "docs/master/current"
-    :doc-paths ["docs/source"]
-    :metadata {
-      :doc/format :markdown
-      :doc "Documentation forthcoming"}}
   :profiles {
     :uber {
       :aot :all}
@@ -43,4 +32,16 @@
       :repl-options {:init-ns meson.dev}
       :dependencies [
         [org.clojure/tools.namespace "0.2.11"
-         :exclusions [org.clojure/clojure]]]}})
+         :exclusions [org.clojure/clojure]]]}
+    :docs {
+      :plugins [[lein-codox "0.10.1"]]
+      :codox {
+        :project {
+          :name "meson"
+          :description "Clojure Client Library for the Mesos HTTP API"}
+        :namespaces [#"^meson\.(?!dev)"]
+        :output-path "docs/master/current"
+        :doc-paths ["docs/source"]
+        :metadata {
+          :doc/format :markdown
+          :doc "Documentation forthcoming"}}}})
