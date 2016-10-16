@@ -28,17 +28,25 @@
 (extend MesonMaster IFiles files/behaviour)
 (extend MesonMaster IHealth health/behaviour)
 
+(defn initialize
+  ""
+  [fields]
+  (->> fields
+       (into client-fields)
+       (client/check-fields)
+       (client/add-host-port (:master fields))
+       (map->MesonMaster)))
+
 (defn create
   "A factory for the Mater client which takes a map as an arguement. If no
   map is provided, the default value of `master/client-fields` is passed."
   ([]
     (create client-fields))
-  ([fields]
-    (->> fields
-         (into client-fields)
-         (client/check-fields)
-         (client/add-host-port (:master fields))
-         (map->MesonMaster))))
+  ([fields & {:keys [start?]}]
+    (let [c (initialize fields)]
+      (if start?
+        (scheduler/start c)
+        c))))
 
 (potemkin/import-vars
   [meson.client.impl.master
@@ -73,6 +81,8 @@
     request
     revive
     shutdown-executor
+    start
+    stop
     subscribe
     teardown]
   [meson.client.impl.config
