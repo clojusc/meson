@@ -59,9 +59,6 @@
   ""
   [fields]
   (logger/set-level! 'meson (get-in fields [:options :log-level]))
-  (cond
-    (get-in fields [:options :debug])
-      (logger/set-level! 'meson :debug))
   fields)
 
 (defn add-host
