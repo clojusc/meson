@@ -12,8 +12,8 @@
 
 * [About](#about-)
 * [Dependencies](#dependencies-)
-* [Usage](#usage-)
 * [Documentation](#documentation-)
+* [Usage](#usage-)
 * [License](#license-)
 
 
@@ -29,6 +29,11 @@ TBD
 * Java
 * Maven (used indirectly by `lein`)
 
+## Documentation [&#x219F;](#contents)
+
+Meson API Reference docs are available here:
+ * [http://clojusc.github.io/meson/](http://clojusc.github.io/meson/)
+
 
 ## Usage [&#x219F;](#contents)
 
@@ -37,12 +42,6 @@ Start up the REPL (and be sure to have a running Mesos deployment), then:
 ```clj
 
 ```
-
-
-## Documentation [&#x219F;](#contents)
-
-Meson API Reference docs are available here:
- * [http://oubiwann.github.io/meson/](http://oubiwann.github.io/meson/)
 
 
 ## License [&#x219F;](#contents)
