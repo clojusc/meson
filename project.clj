@@ -34,7 +34,8 @@
         [org.clojure/tools.namespace "0.2.11"
          :exclusions [org.clojure/clojure]]]}
     :docs {
-      :plugins [[lein-codox "0.10.1"]]
+      :plugins [[lein-codox "0.10.1"]
+                [lein-simpleton "1.3.0"]]
       :codox {
         :project {
           :name "meson"
