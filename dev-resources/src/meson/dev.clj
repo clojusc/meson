@@ -1,4 +1,4 @@
-(ns meson.debug
+(ns meson.dev
   (:require [clojure.core.async :as async :refer [<! >!]]
             [clojure.java.io :as io]
             [clojure.pprint :refer [print-table]]

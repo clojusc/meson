@@ -17,7 +17,7 @@
     :project {
       :name "meson"
       :description "Clojure Client Library for the Mesos HTTP API"}
-    :namespaces [#"^meson\.(?!debug)"]
+    :namespaces [#"^meson\.(?!dev)"]
     :output-path "docs/master/current"
     :doc-paths ["docs/source"]
     :metadata {
@@ -40,7 +40,7 @@
         :integration :integration}}
     :dev {
       :source-paths ["dev-resources/src"]
-      :repl-options {:init-ns meson.debug}
+      :repl-options {:init-ns meson.dev}
       :dependencies [
         [org.clojure/tools.namespace "0.2.11"
          :exclusions [org.clojure/clojure]]]}})
