@@ -1,5 +1,10 @@
 (ns meson.debug
-  (:require [clojure.tools.logging :as log]
+  (:require [clojure.core.async :as async :refer [<! >!]]
+            [clojure.java.io :as io]
+            [clojure.pprint :refer [print-table]]
+            [clojure.reflect :refer [reflect]]
+            [clojure.string :as string]
+            [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as repl]
             [clojure.walk :refer [macroexpand-all]]
             ;; http
@@ -8,6 +13,7 @@
             [clojure.data.json :as json]
             ;; data types
             [clojure.data.codec.base64 :as b64]
+            [clojusc.twig :as twig]
             ;; meson
             [meson.client :as client]
             [meson.client.impl.master.scheduler :as impl-sched]
@@ -19,6 +25,15 @@
             [meson.protobuf.mesos :as pb-mesos]
             [meson.protobuf.scheduler :as pb-scheduler]
             [meson.util :as util]))
+
+(twig/set-level! '[meson] :debug)
+
+(defn show-methods
+  ""
+  [obj]
+  (print-table
+    (sort-by :name
+      (filter :exception-types (:members (reflect obj))))))
 
 ;;; Aliases
 
