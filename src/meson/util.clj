@@ -1,6 +1,7 @@
 (ns meson.util
   "Some convenience/utility functions used in the rest of Mesomatic."
   (:require [clojure.data.json :as json]
+            [clojure.java.io :as io]
             [clojure.string :as string])
   (:import [clojure.lang Keyword]))
 
@@ -71,3 +72,13 @@
       (bytes->str)
       (json/read-str :key-fn keyword)
       (update :type #(keyword (string/lower-case %)))))
+
+(defn str->bytes
+  ""
+  [str]
+  (.getBytes str))
+
+(defn str->stream
+  ""
+  [str]
+  (io/input-stream (str->bytes str)))
