@@ -10,7 +10,7 @@
     "A wrapper method that gets the size and then the data for the next
     record in the stream."))
 
-(defn read-record-size
+(defn- read-record-size
   [^java.io.InputStream stream]
   (loop [data []]
     (let [byte (.read stream)]
@@ -18,7 +18,7 @@
         (util/bytes->int data)
         (recur (conj data byte))))))
 
-(defn read-record-data
+(defn- read-record-data
   [^java.io.InputStream stream asize]
   (let [array (byte-array asize)]
     (loop [byte-index 0]
@@ -28,7 +28,7 @@
           (aset-byte array byte-index (.read stream))
           (recur (inc byte-index)))))))
 
-(defn read-next
+(defn- read-next
   ([^java.io.InputStream stream]
     (let [size (read-record-size stream)]
       (read-record-data stream size)))
