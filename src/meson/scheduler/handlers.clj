@@ -1,10 +1,11 @@
 (ns meson.scheduler.handlers
-  (:require [clojure.tools.logging :as log]))
+  (:require [clojure.tools.logging :as log]
+            [clojusc.twig :as twig]))
 
 (defn- debug-trace
   [type msg]
   (log/debugf "Got %s message." type)
-  (log/trace msg))
+  (log/tracef "Message:\n %s" (twig/pprint msg)))
 
 (defmulti default
   "Provides a default handling for scheduler messages. No action is taken
@@ -25,23 +26,23 @@
   [state msg]
   (debug-trace "OFFERS" msg))
 
-(defmethod default :offers
+(defmethod default :rescind
   [state msg]
   (debug-trace "RESCIND" msg))
 
-(defmethod default :offers
+(defmethod default :update
   [state msg]
   (debug-trace "UPDATE" msg))
 
-(defmethod default :offers
+(defmethod default :message
   [state msg]
   (debug-trace "MESSAGE" msg))
 
-(defmethod default :offers
+(defmethod default :failure
   [state msg]
   (debug-trace "FAILURE" msg))
 
-(defmethod default :offers
+(defmethod default :error
   [state msg]
   (debug-trace "ERROR" msg))
 
