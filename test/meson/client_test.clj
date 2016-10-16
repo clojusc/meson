@@ -16,7 +16,7 @@
   (let [c (client/->base-client)]
     (is (= (:base-path c) "/"))
     (is (= (:version c) "1"))
-    (is (= (get-in c [:options :debug]) true))))
+    (is (= (get-in c [:options :debug]) false))))
 
 (deftest ^:unit get-context
   (let [c (client/->base-client)]

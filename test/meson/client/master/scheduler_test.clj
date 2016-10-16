@@ -15,7 +15,7 @@
     (is (= (:master c) "localhost:5050"))
     (is (= (:host c) "localhost"))
     (is (= (:port c) "5050"))
-    (is (= (get-in c [:options :debug]) true))))
+    (is (= (get-in c [:options :debug]) false))))
 
 (deftest ^:unit get-context
   (let [c (scheduler/->client)]
