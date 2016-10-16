@@ -13,6 +13,7 @@ $(DOCS_GIT_HACK):
 	-@ln -s $(ROOT_DIR)/.git $(DOCS_DIR)
 
 clean-docs:
+	@echo "\nCleaning old docs build ..."
 	@rm -rf $(CURRENT)
 
 pre-docs:
