@@ -15,6 +15,7 @@
     "Exposes the flag configuration for an agent or a master.
 
     See the following:
+
     * http://mesos.apache.org/documentation/latest/endpoints/master/flags/
     * http://mesos.apache.org/documentation/latest/endpoints/slave/flags/"))
 
@@ -54,6 +55,7 @@
     :json, this endpoint shows the internal virtual path map as a JSON object.
 
     See the following:
+
     * http://mesos.apache.org/documentation/latest/endpoints/files/download/
     * http://mesos.apache.org/documentation/latest/endpoints/files/download.json/")
   (read [this path offset length]
@@ -68,6 +70,7 @@
     "Perform a health check of the master or a given agent.
 
     See the following:
+
     * http://mesos.apache.org/documentation/latest/endpoints/master/health/
     * http://mesos.apache.org/documentation/latest/endpoints/slave/health/")
   (get-metrics [this] [this timeout]
@@ -83,6 +86,7 @@
     "Information about state of a master or an agent.
 
     See the following:
+
     * http://mesos.apache.org/documentation/latest/endpoints/master/state/
     * http://mesos.apache.org/documentation/latest/endpoints/slave/state/")
   (get-system-stats [this]
