@@ -22,7 +22,7 @@
 (deftest ^:integration get-metrics
   (let [c (master/create testing-master)
         metrics-keys (sort (keys (master/get-metrics c)))]
-    (is (= (count metrics-keys) 126))
+    (is (> (count metrics-keys) 100))
     (is (= (first metrics-keys) :allocator/event_queue_dispatches))
     (is (= (second metrics-keys) :allocator/mesos/allocation_run_ms))
     (is (= (last metrics-keys) :system/mem_total_bytes))))
