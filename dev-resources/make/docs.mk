@@ -19,7 +19,7 @@ pre-docs:
 	@echo "\nBuilding docs ...\n"
 
 clojure-docs:
-	@lein codox
+	@lein with-profile +docs codox
 
 local-docs: pre-docs clojure-docs
 
@@ -27,7 +27,7 @@ docs: clean-docs local-docs
 
 devdocs: docs
 	@echo "\nRunning docs server on http://$(LOCAL_DOCS_HOST):$(LOCAL_DOCS_PORT)..."
-	@lein simpleton $(LOCAL_DOCS_PORT) file :from $(CURRENT)
+	@lein with-profile +docs simpleton $(LOCAL_DOCS_PORT) file :from $(CURRENT)
 
 prod-docs: clean-docs $(DOCS_GIT_HACK) local-docs
 
