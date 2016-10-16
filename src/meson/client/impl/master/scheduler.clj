@@ -3,19 +3,16 @@
             [clojure.data.json :as json]
             [clojure.string :as string]
             [clojure.tools.logging :as log]
-            [meson.http :as http]))
+            [meson.http :as http]
+            [meson.util :as util])
+  (:import [clojure.lang Keyword]))
 
-(defn convert-upper
-  [type]
-  (-> type
-      (name)
-      (string/upper-case)))
-
-(defn convert-lower
-  [type]
-  (-> type
-      (name)
-      (string/lower-case)))
+(def scheduler-path "api/v1/scheduler")
+(def default-scheduler-timeout 10)
+(def default-scheduler-threads 4)
+(def default-scheduler-opts
+  {:timeout default-scheduler-timeout
+   :threads default-scheduler-threads})
 
 (defn start
   ""
@@ -24,7 +21,7 @@
   ([this opts]
     (log/debug "Starting connection manager for the scheduler ...")
     (->> opts
-         (into {:timeout 10 :threads 4})
+         (into default-scheduler-opts)
          (http-conn-mgr/make-reusable-conn-manager)
          (assoc this :conn-mgr))))
 
@@ -35,18 +32,18 @@
   (http-conn-mgr/shutdown-manager (:conn-mgr this)))
 
 (defn call
-  ([this type]
+  ([this ^Keyword type]
     (call this type nil))
-  ([this type payload]
-    (call this type payload "application/json")) ; put in a const
-  ([this type payload content-type]
+  ([this ^Keyword type payload]
+    (call this type payload http/json-content-type))
+  ([this ^Keyword type payload content-type]
     (call this type payload content-type {}))
-  ([this type payload content-type opts]
-    (let [data {:type (convert-upper type)
-                (convert-lower type) payload}]
+  ([this ^Keyword type payload content-type opts]
+    (let [data {:type (util/convert-upper type)
+                (util/convert-lower type) payload}]
       (http/post
         this
-        "api/v1/scheduler"
+        scheduler-path
         :body (json/write-str data)
         :opts (into opts {:content-type content-type
                           :accept content-type})))))

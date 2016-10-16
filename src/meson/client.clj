@@ -30,10 +30,10 @@
      ;:accept "application/json"
      :content-type "application/x-protobuf" ; or application/x-protobuf
      :accept "application/x-protobuf"
-     :debug true
-     :debug-body true
-     :throw-entire-message? true
-     :log-level :info
+     :debug false
+     :debug-body false
+     :throw-entire-message? false
+     :log-level :error
      :headers {:user-agent user-agent}
      :client-params {
        "http.useragent" user-agent}}})

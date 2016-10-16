@@ -10,7 +10,7 @@
   (let [c (agent/create)]
     (is (= (:base-path c) "/"))
     (is (= (:version c) "1"))
-    (is (= (get-in c [:options :debug]) true))))
+    (is (= (get-in c [:options :debug]) false))))
 
 ;;; Integration Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

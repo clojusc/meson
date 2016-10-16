@@ -1,7 +1,9 @@
 (ns meson.util
   "Some convenience/utility functions used in the rest of Mesomatic."
   (:require [clojure.data.json :as json]
-            [clojure.string :as string]))
+            [clojure.java.io :as io]
+            [clojure.string :as string])
+  (:import [clojure.lang Keyword]))
 
 (defn camel->under
   "From Emerick, Grande, Carper 2012 p.70."
@@ -24,6 +26,18 @@
                   (partition 2 clauses))
           (when (odd? (count clauses))
             (list (last clauses)))))))
+
+(defn convert-upper
+  [^Keyword type]
+  (-> type
+      (name)
+      (string/upper-case)))
+
+(defn convert-lower
+  [^Keyword type]
+  (-> type
+      (name)
+      (string/lower-case)))
 
 (defn newline?
   ""
@@ -58,3 +72,13 @@
       (bytes->str)
       (json/read-str :key-fn keyword)
       (update :type #(keyword (string/lower-case %)))))
+
+(defn str->bytes
+  ""
+  [str]
+  (.getBytes str))
+
+(defn str->stream
+  ""
+  [str]
+  (io/input-stream (str->bytes str)))
