@@ -24,6 +24,7 @@
             [meson.protobuf :as protobuf]
             [meson.protobuf.mesos :as pb-mesos]
             [meson.protobuf.scheduler :as pb-scheduler]
+            [meson.scheduler.handlers :as scheduler-handlers]
             [meson.util :as util]
             [meson.util.recordio :as recordio]))
 
