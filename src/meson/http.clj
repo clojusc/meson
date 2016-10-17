@@ -4,6 +4,8 @@
             [clj-http.client :as httpc]
             [clojusc.twig :refer [pprint]]
             [meson.client.base :as base]
+            [meson.error :as error]
+            [meson.http.status-code :as status-code]
             [meson.protobuf.mesos :as pb-mesos]
             [meson.util :as util])
   (:refer-clojure :exclude [get]))
@@ -37,37 +39,64 @@
       status
       response)))
 
+(defn- get-http-verb-func
+  ""
+  [verb]
+  (case verb
+    :delete httpc/delete
+    :get httpc/get
+    :post httpc/post
+    :put httpc/put))
+
+(defn- call
+  "This private function was created in order that there would be one, single
+  function that all HTTP-verb-based functions call in order to make error
+  handling easier. With this function defined, we only ever have to wrap this
+  function with error handlers, instead of all of the HTTP verb functions."
+  [verb url options]
+  ((get-http-verb-func verb) url options))
+
 (defn delete
   ""
   [c path & {:keys [body opts]}]
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
-    (httpc/delete
-      (base/get-url c path)
-      options)))
+    (call :delete
+          (base/get-url c path)
+          options)))
 
 (defn get
   ""
   [c path & {:keys [opts status-only] :as kwargs}]
-  (-> (base/get-url c path)
-      (httpc/get (:options (merge-options c opts)))
-      (into {:status-only status-only})
-      (parse-response)))
+  (as-> (base/get-url c path) data
+        (call :get data (:options (merge-options c opts)))
+        (into data {:status-only status-only})
+        (parse-response data)))
 
 (defn post
   ""
   [c path & {:keys [body opts]}]
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
-    (httpc/post
-      (base/get-url c path)
-      options)))
+    (call :post
+          (base/get-url c path)
+          options)))
 
 (defn put
   ""
   [c path & {:keys [body opts]}]
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
-    (httpc/put
-      (base/get-url c path)
-      options)))
+    (call :put
+          (base/get-url c path)
+          options)))
+
+(error/add-handler
+  #'call
+  java.net.ConnectException
+  status-code/bad-gateway)
+
+(error/add-handler
+  #'call
+  [:status status-code/bad-request]
+  error/mesos-client-error)
