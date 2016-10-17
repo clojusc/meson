@@ -33,79 +33,80 @@
 
 (defn call
   ([this ^Keyword type]
-    (call this type nil))
-  ([this ^Keyword type payload]
-    (call this type payload http/json-content-type))
-  ([this ^Keyword type payload content-type]
-    (call this type payload content-type {}))
-  ([this ^Keyword type payload content-type opts]
+    (call this type nil nil))
+  ([this ^Keyword type payload framework-id]
+    (call this type payload framework-id http/json-content-type))
+  ([this ^Keyword type payload framework-id content-type]
+    (call this type payload framework-id content-type {}))
+  ([this ^Keyword type payload framework-id content-type opts]
     (let [data {:type (util/convert-upper type)
                 (util/convert-lower type) payload}]
       (http/post
         this
         scheduler-path
-        :body (json/write-str data)
+        :body (json/write-str (merge data (or framework-id {})))
         :opts (into opts {:content-type content-type
                           :accept content-type})))))
 
 (defn accept
-  ([this payload stream-id]
-    (accept this payload stream-id http/json-content-type))
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id]
+    (accept this payload stream-id framework-id http/json-content-type))
+  ([this payload stream-id framework-id content-type]
     (call
       this
       :accept
       payload
+      framework-id
       content-type
       {:connection-manager (:conn-mgr this)
-       :mesos-stream-id stream-id})))
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn acknowledge
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn decline
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn kill-task
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn message
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn reconcile
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn request
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn revive
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn shutdown-executor
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (defn subscribe
@@ -116,6 +117,7 @@
       this
       :subscribe
       payload
+      nil
       content-type
       {:as :stream
        :streaming? true
@@ -124,9 +126,9 @@
        :connection-manager (:conn-mgr this)})))
 
 (defn teardown
-  ([this payload stream-id]
+  ([this payload stream-id framework-id]
     :not-yet-implemented)
-  ([this payload stream-id content-type]
+  ([this payload stream-id framework-id content-type]
     :not-yet-implemented))
 
 (def behaviour
