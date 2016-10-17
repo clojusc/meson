@@ -49,62 +49,68 @@
                           :accept content-type})))))
 
 (defn accept
-  ([this payload]
-    :not-yet-implemented)
-  ([this payload content-type]
-    :not-yet-implemented))
+  ([this payload stream-id]
+    (accept this payload stream-id http/json-content-type))
+  ([this payload stream-id content-type]
+    (call
+      this
+      :accept
+      payload
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :mesos-stream-id stream-id})))
 
 (defn acknowledge
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn decline
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn kill-task
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn message
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn reconcile
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn request
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn revive
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn shutdown-executor
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (defn subscribe
   ([this payload]
-    (subscribe this payload "application/json"))
+    (subscribe this payload http/json-content-type))
   ([this payload content-type]
     (call
       this
@@ -114,13 +120,13 @@
       {:as :stream
        :streaming? true
        :chunked? true
-       :connection "keep-alive"
+       :connection http/keep-alive
        :connection-manager (:conn-mgr this)})))
 
 (defn teardown
-  ([this payload]
+  ([this payload stream-id]
     :not-yet-implemented)
-  ([this payload content-type]
+  ([this payload stream-id content-type]
     :not-yet-implemented))
 
 (def behaviour
