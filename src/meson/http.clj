@@ -3,7 +3,7 @@
             [clojure.tools.logging :as log]
             [clj-http.client :as httpc]
             [clojusc.twig :refer [pprint]]
-            [meson.client.base :as base]
+            [meson.client.common :as common]
             [meson.error :as error]
             [meson.http.status-code :as status-code]
             [meson.protobuf.mesos :as pb-mesos]
@@ -62,13 +62,13 @@
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (call :delete
-          (base/get-url c path)
+          (common/get-url c path)
           options)))
 
 (defn get
   ""
   [c path & {:keys [opts status-only] :as kwargs}]
-  (as-> (base/get-url c path) data
+  (as-> (common/get-url c path) data
         (call :get data (:options (merge-options c opts)))
         (into data {:status-only status-only})
         (parse-response data)))
@@ -79,7 +79,7 @@
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (call :post
-          (base/get-url c path)
+          (common/get-url c path)
           options)))
 
 (defn put
@@ -88,7 +88,7 @@
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (call :put
-          (base/get-url c path)
+          (common/get-url c path)
           options)))
 
 (error/add-handler

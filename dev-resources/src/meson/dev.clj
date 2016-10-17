@@ -16,9 +16,8 @@
             [clojusc.twig :as twig]
             ;; meson
             [meson.client :as client]
-            [meson.client.impl.master.scheduler :as impl-sched]
+            [meson.client.impl.master.scheduler :as scheduler]
             [meson.client.master :as master]
-            [meson.client.master.scheduler :as scheduler]
             [meson.core :as meson]
             [meson.http :as http]
             [meson.protobuf :as protobuf]
