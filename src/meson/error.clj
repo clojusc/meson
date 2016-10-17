@@ -1,5 +1,6 @@
 (ns meson.error
   (:require [clojure.tools.logging :as log]
+            [clojusc.twig :refer [pprint]]
             [dire.core :refer [with-handler!]]))
 
 (defn error [type msg]
@@ -19,16 +20,18 @@
     exception
     (.getMessage exception)))
 
-(defn process-error [error-data exception err-func]
+(defn process-error [args exception err-func]
   (let [error-msg (get-message exception)
         reason (:body error-msg)
         error (err-func reason)]
+    (log/error reason)
+    (log/error "Passed args:" (pprint args))
     (log/error error)
-    (assoc error-data :msg error-msg
-                      :reason-phrase (:reason-phrase error-msg)
-                      :status (:status error-msg)
-                      :error error
-                      :exception exception)))
+    {:msg error-msg
+     :reason-phrase (:reason-phrase error-msg)
+     :status (:status error-msg)
+     :error error
+     :exception exception}))
 
 (defn add-handler
   "The error handler needs to return a response, since the response headers
@@ -45,5 +48,4 @@
     func
     ex
     (fn [e & args]
-      (-> {:args args}
-          (process-error e err-func)))))
+      (process-error args e err-func))))
