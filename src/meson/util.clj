@@ -3,7 +3,8 @@
   (:require [clojure.data.json :as json]
             [clojure.java.io :as io]
             [clojure.string :as string])
-  (:import [clojure.lang Keyword]))
+  (:import [clojure.lang Keyword]
+           [java.util UUID]))
 
 (defn camel->under
   "From Emerick, Grande, Carper 2012 p.70."
@@ -82,3 +83,10 @@
   ""
   [str]
   (io/input-stream (str->bytes str)))
+
+(defn get-uuid
+  "A Mesos-friendly UUID wrapper."
+  []
+  (->> (UUID/randomUUID)
+       (str)
+       (assoc {} :value)))
