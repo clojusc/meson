@@ -1,6 +1,7 @@
 (ns meson.client.master
   (:require [clojusc.twig :as logger]
             [meson.client :as client]
+            [meson.client.common :as common]
             [meson.client.impl.master :as master]
             [meson.client.impl.master.scheduler :as scheduler]
             [meson.client.impl.config :as config]
@@ -33,8 +34,8 @@
   [fields]
   (->> fields
        (into client-fields)
-       (client/check-fields)
-       (client/add-host-port (:master fields))
+       (common/check-fields)
+       (common/add-host-port (:master fields))
        (map->MesonMaster)))
 
 (defn create

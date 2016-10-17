@@ -1,6 +1,7 @@
 (ns meson.client.agent
   (:require [clojusc.twig :as logger]
             [meson.client :as client]
+            [meson.client.common :as common]
             [meson.client.impl.agent :as agent]
             [meson.client.impl.config :as config]
             [meson.client.impl.debug :as debug]
@@ -33,8 +34,8 @@
   ([fields]
     (->> fields
          (into client-fields)
-         (client/check-fields)
-         (client/add-host-port (:agent fields))
+         (common/check-fields)
+         (common/add-host-port (:agent fields))
          (map->MesonAgent))))
 
 (potemkin/import-vars
