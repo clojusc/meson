@@ -10,6 +10,7 @@
 
 (def json-content-type "application/json")
 (def protobuf-content-type "application/x-protobuf")
+(def keep-alive "keep-alive")
 
 (defn convert-data
   ""
