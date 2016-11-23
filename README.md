@@ -59,7 +59,7 @@ Apache License, Version 2.0.
 [deps-badge]: http://jarkeeper.com/clojusc/meson/status.svg
 [logo]: resources/images/Meson-nonet-spin-0-250x.png
 [logo-large]: resources/images/Meson-nonet-spin-0-1000x.png
-[tag-badge]: https://img.shields.io/github/tag/clojusc/meson.svg?maxAge=2592000
+[tag-badge]: https://img.shields.io/github/tag/clojusc/meson.svg
 [tag]: https://github.com/clojusc/meson/tags
 [clojure-v]: https://img.shields.io/badge/clojure-1.8.0-blue.svg
 [clojars]: https://clojars.org/meson
