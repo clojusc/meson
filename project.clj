@@ -1,18 +1,20 @@
 (defproject meson "0.1.0-SNAPSHOT"
   :description "Clojure Client Library for the Mesos HTTP API"
   :url "https://github.com/clojusc/meson"
-  :license {:name "Apache License, Version 2.0"
-            :url "http://www.apache.org/licenses/LICENSE-2.0"}
-  :dependencies [[clj-http "3.4.1"]
-                 [clojusc/twig "0.3.1-SNAPSHOT"]
-                 [dire "0.5.4"]
-                 [leiningen-core "2.7.1"]
-                 [org.clojure/clojure "1.8.0"]
-                 [org.clojure/core.async "0.2.395"]
-                 [org.clojure/data.codec "0.1.0"]
-                 [org.clojure/data.json "0.2.6"]
-                 [org.apache.mesos/mesos "1.1.0"]
-                 [potemkin "0.4.3"]]
+  :license {
+    :name "Apache License, Version 2.0"
+    :url "http://www.apache.org/licenses/LICENSE-2.0"}
+  :dependencies [
+    [clj-http "3.7.0"]
+    [clojusc/twig "0.3.1"]
+    [dire "0.5.4"]
+    [leiningen-core "2.7.1"]
+    [org.clojure/clojure "1.8.0"]
+    [org.clojure/core.async "0.3.443"]
+    [org.clojure/data.codec "0.1.0"]
+    [org.clojure/data.json "0.2.6"]
+    [org.apache.mesos/mesos "1.3.1"]
+    [potemkin "0.4.4"]]
   :profiles {
     :uber {
       :aot :all}
@@ -31,14 +33,16 @@
         :system :system
         :integration :integration}}
     :dev {
+      :exclusions [org.clojure/clojure]
       :source-paths ["dev-resources/src"]
-      :repl-options {:init-ns meson.dev}
+      :repl-options {
+        :init-ns meson.dev}
       :dependencies [
-        [org.clojure/tools.namespace "0.2.11"
-         :exclusions [org.clojure/clojure]]]}
+        [org.clojure/tools.namespace "0.2.11"]]}
     :docs {
-      :plugins [[lein-codox "0.10.2"]
-                [lein-simpleton "1.3.0"]]
+      :plugins [
+        [lein-codox "0.10.3"]
+        [lein-simpleton "1.3.0"]]
       :codox {
         :project {
           :name "meson"
