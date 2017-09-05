@@ -48,8 +48,8 @@
           :name "meson"
           :description "Clojure Client Library for the Mesos HTTP API"}
         :namespaces [#"^meson\.(?!dev)"]
-        :output-path "docs/master/current"
-        :doc-paths ["docs/source"]
+        :output-path "docs/current"
+        :doc-paths ["docs/md"]
         :metadata {
           :doc/format :markdown
           :doc "Documentation forthcoming"}}}}
@@ -65,4 +65,6 @@
       "eastwood" "{:namespaces [:source-paths] :source-paths [\"src\"]}"]
     "lint" [
       "with-profile" "+test" "do"
-        ["check"] ["kibit"] ["outlaw"]]})
+        ["check"] ["kibit"] ["outlaw"]]
+    "docs" [
+      "with-profile" "+docs" "do" "codox"]})
