@@ -6,20 +6,11 @@
             [meson.client.common :as common]
             [meson.error :as error]
             [meson.http.status-code :as status-code]
-            [meson.protobuf.mesos :as pb-mesos]
             [meson.util :as util])
   (:refer-clojure :exclude [get]))
 
 (def json-content-type "application/json")
-(def protobuf-content-type "application/x-protobuf")
 (def keep-alive "keep-alive")
-
-(defn convert-data
-  ""
-  [content-type record-name body]
-  (case content-type
-    json-content-type (pb-mesos/map->json record-name body)
-    protobuf-content-type (pb-mesos/->map record-name body)))
 
 (defn merge-options
   ""
