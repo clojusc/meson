@@ -17,12 +17,14 @@
     :uber {
       :aot :all}
     :test {
-      :dependencies [
-        [jonase/eastwood "0.2.3" :exclusions [org.clojure/clojure]]
-        [lein-kibit "0.1.3" :exclusions [org.clojure/clojure]]]
+      :exclusions [org.clojure/clojure]
       :plugins [
-        [jonase/eastwood "0.2.3" :exclusions [org.clojure/clojure]]
-        [lein-kibit "0.1.3" :exclusions [org.clojure/clojure]]]
+        [jonase/eastwood "0.2.4"]
+        [lein-ancient "0.6.10"]
+        [lein-bikeshed "0.4.1"]
+        [lein-kibit "0.1.5"]
+        [lein-shell "0.5.0"]
+        [venantius/yagni "0.1.4"]]
       :test-selectors {
         :default :unit
         :unit :unit
@@ -46,4 +48,17 @@
         :doc-paths ["docs/source"]
         :metadata {
           :doc/format :markdown
-          :doc "Documentation forthcoming"}}}})
+          :doc "Documentation forthcoming"}}}}
+  :aliases {
+    "check-deps" [
+      "with-profile" "+test" "ancient" "check" ":all"]
+    "kibit" [
+      "with-profile" "+test" "do"
+        ["shell" "echo" "== Kibit =="]
+        ["kibit"]]
+    "outlaw" [
+      "with-profile" "+test"
+      "eastwood" "{:namespaces [:source-paths] :source-paths [\"src\"]}"]
+    "lint" [
+      "with-profile" "+test" "do"
+        ["check"] ["kibit"] ["outlaw"]]})
