@@ -1,5 +1,8 @@
 (ns meson.dev
-  (:require [clojure.core.async :as async :refer [<! >!]]
+  (:require [clj-http.client :as httpc]
+            [clojure.core.async :as async :refer [<! >!]]
+            [clojure.data.codec.base64 :as b64]
+            [clojure.data.json :as json]
             [clojure.java.io :as io]
             [clojure.pprint :refer [print-table]]
             [clojure.reflect :refer [reflect]]
@@ -7,22 +10,12 @@
             [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as repl]
             [clojure.walk :refer [macroexpand-all]]
-            ;; http
-            [clj-http.client :as httpc]
-            ;; data
-            [clojure.data.json :as json]
-            ;; data types
-            [clojure.data.codec.base64 :as b64]
             [clojusc.twig :as twig]
-            ;; meson
             [meson.client :as client]
             [meson.client.impl.master.scheduler :as scheduler]
             [meson.client.master :as master]
             [meson.core :as meson]
-            [meson.http :as http]
-            [meson.protobuf :as protobuf]
-            [meson.protobuf.mesos :as pb-mesos]
-            [meson.protobuf.scheduler :as pb-scheduler]
+            [meson.http.core :as http]
             [meson.scheduler.handlers :refer [default]
                                       :rename {default default-handler}]
             [meson.util :as util]
