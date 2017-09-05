@@ -1,5 +1,5 @@
 (ns meson.client.impl.config
-  (:require [meson.http :as http]))
+  (:require [meson.http.core :as http]))
 
 (defn get-version
   ""

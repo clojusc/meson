@@ -1,5 +1,5 @@
 (ns meson.client.impl.health
-  (:require [meson.http :as http]))
+  (:require [meson.http.core :as http]))
 
 (defn get-health
   ([this]

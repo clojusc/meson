@@ -3,7 +3,7 @@
             [clojusc.twig :as logger]
             [meson.client.common :as common]
             [meson.const :as const]
-            [meson.http :as http]))
+            [meson.http.core :as http]))
 
 (def user-agent
   (format "Meson REST Client/%s (Clojure %s; Java %s) (+%s)"

@@ -1,6 +1,6 @@
-(ns meson.http-test
+(ns meson.http.core-test
   (:require [clojure.test :refer :all]
-            [meson.http :as http]))
+            [meson.http.core :as http]))
 
 ;;; Unit Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

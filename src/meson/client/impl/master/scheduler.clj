@@ -3,7 +3,7 @@
             [clojure.data.json :as json]
             [clojure.string :as string]
             [clojure.tools.logging :as log]
-            [meson.http :as http]
+            [meson.http.core :as http]
             [meson.util :as util])
   (:import [clojure.lang Keyword]))
 

@@ -1,4 +1,4 @@
-(ns meson.http
+(ns meson.http.core
   (:require [clojure.data.json :as json]
             [clojure.tools.logging :as log]
             [clj-http.client :as httpc]
