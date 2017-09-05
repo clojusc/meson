@@ -38,7 +38,9 @@
       :repl-options {
         :init-ns meson.dev}
       :dependencies [
-        [org.clojure/tools.namespace "0.2.11"]]}
+        [org.clojure/tools.namespace "0.2.11"]]
+      :plugins [
+        [lein-shell "0.5.0"]]}
     :docs {
       :dependencies [
         [codox-theme-rdash "0.1.2"]]
@@ -78,4 +80,6 @@
         ["compile"]
         ["uberjar"]
         ["test"]
-        ["docs"]]})
+        ["docs"]]
+    "mesos" [
+      "shell" "make" "local-travis"]})
