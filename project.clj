@@ -1,4 +1,4 @@
-(defproject meson "0.1.0-SNAPSHOT"
+(defproject meson "0.2.0-SNAPSHOT"
   :description "Clojure Client Library for the Mesos HTTP API"
   :url "https://github.com/clojusc/meson"
   :license {

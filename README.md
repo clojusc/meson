@@ -1,4 +1,5 @@
 # meson
+
 [![Build Status][travis-badge]][travis][![Dependencies Status][deps-badge]][deps][![Clojars Project][clojars-badge]][clojars][![Clojure version][clojure-v]](project.clj)
 
 *Clojure Client Library for the Mesos HTTP API*
@@ -24,10 +25,12 @@ TBD
 
 ## Dependencies [&#x219F;](#contents)
 
-* Mesos 1.0+
-* `lein`
 * Java
-* Maven (used indirectly by `lein`)
+* Mesos 1.3+
+  * You need a running Mesos deployment
+  * You need to have built the Mesos protobuf Java drivers
+* `lein`
+
 
 ## Documentation [&#x219F;](#contents)
 
@@ -46,7 +49,7 @@ Start up the REPL (and be sure to have a running Mesos deployment), then:
 
 ## License [&#x219F;](#contents)
 
-Copyright © 2016, Clojure-Aided Enrichment Center
+Copyright © 2016-2017, Clojure-Aided Enrichment Center
 
 Apache License, Version 2.0.
 
