@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-apt-get install libevent-dev
+apt-get install -y libevent-dev libcurl4-nss-dev
 
 REPO_HOST=repos.mesosphere.com
 #MESOS_DEB=mesos_1.0.1-2.0.93.ubuntu1404_amd64.deb
