@@ -40,6 +40,8 @@
       :dependencies [
         [org.clojure/tools.namespace "0.2.11"]]}
     :docs {
+      :dependencies [
+        [codox-theme-rdash "0.1.2"]]
       :plugins [
         [lein-codox "0.10.3"]
         [lein-simpleton "1.3.0"]]
@@ -48,11 +50,12 @@
           :name "meson"
           :description "Clojure Client Library for the Mesos HTTP API"}
         :namespaces [#"^meson\.(?!dev)"]
-        :output-path "docs/current"
-        :doc-paths ["docs/md"]
         :metadata {
           :doc/format :markdown
-          :doc "Documentation forthcoming"}}}}
+          :doc "Documentation forthcoming"}
+        :themes [:rdash]
+        :doc-paths ["docs/md"]
+        :output-path "docs/current"}}}
   :aliases {
     "check-deps" [
       "with-profile" "+test" "ancient" "check" ":all"]
