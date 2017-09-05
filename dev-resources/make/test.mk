@@ -41,15 +41,15 @@ check-no-lint:
 	@lein with-profile +test,-dev test :all
 
 travis-check:
-	./test/travis.sh
+	@lein lint && lein travis
 
 local-travis-check:
 	./test/local-travis/check.sh
-	./test/travis.sh
+	$(MAKE) travis-check
 
 local-travis-check-no-lint:
 	./test/local-travis/check.sh
-	./test/travis-no-lint.sh
+	@lein travis
 
 local-travis: TEST_DIR = ./test/local-travis
 local-travis: TAG = meson/test

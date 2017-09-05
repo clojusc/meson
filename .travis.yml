@@ -5,13 +5,13 @@ before_script:
   - sudo test/install_deps.sh
   - sudo test/start_mesos.sh
 script:
-  - make travis-check
+  - lein travis
 jdk:
   - oraclejdk8
   #- oraclejdk7
   #- openjdk6
   #- openjdk7
- 
+
 notifications:
   email:
       - oubiwann@gmail.com

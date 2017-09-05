@@ -70,4 +70,12 @@
       "with-profile" "+test" "do"
         ["check"] ["kibit"] ["outlaw"]]
     "docs" [
-      "with-profile" "+docs" "do" "codox"]})
+      "with-profile" "+docs" "do" "codox"]
+    "travis" [
+      "do"
+        ["version"]
+        ["check-deps"]
+        ["compile"]
+        ["uberjar"]
+        ["test"]
+        ["docs"]]})
