@@ -11,9 +11,7 @@
     [leiningen-core "2.7.1"]
     [org.clojure/clojure "1.8.0"]
     [org.clojure/core.async "0.3.443"]
-    [org.clojure/data.codec "0.1.0"]
     [org.clojure/data.json "0.2.6"]
-    [org.apache.mesos/mesos "1.3.1"]
     [potemkin "0.4.4"]]
   :profiles {
     :uber {
@@ -38,6 +36,7 @@
       :repl-options {
         :init-ns meson.dev}
       :dependencies [
+        [org.clojure/data.codec "0.1.0"]
         [org.clojure/tools.namespace "0.2.11"]]
       :plugins [
         [lein-shell "0.5.0"]]}
