@@ -78,7 +78,7 @@
         ["check-deps"]
         ["compile"]
         ["uberjar"]
-        ["test"]
+        ["test" ":unit"]
         ["docs"]]
     "mesos" [
       "shell" "make" "local-travis"]})
