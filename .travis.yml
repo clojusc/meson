@@ -1,9 +1,9 @@
-dist: trusty
 sudo: required
+services: docker
 language: clojure
-before_script:
-  - sudo test/install_deps.sh
-  - sudo test/start_mesos.sh
+before_install:
+  - docker pull clojusc/mesos
+  - docker run -d -p 5050:5050 clojusc/mesos
 script:
   - lein travis
 jdk:
