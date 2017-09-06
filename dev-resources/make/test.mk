@@ -42,20 +42,3 @@ check-no-lint:
 
 travis-check:
 	@lein lint && lein travis
-
-local-travis-check:
-	./test/local-travis/check.sh
-	$(MAKE) travis-check
-
-local-travis-check-no-lint:
-	./test/local-travis/check.sh
-	@lein travis
-
-local-travis: TEST_DIR = ./test/local-travis
-local-travis: TAG = meson/test
-local-travis:
-	cp -r src $(TEST_DIR)/
-	$(TEST_DIR)/setup.sh
-	docker build -t $(TAG) $(TEST_DIR)/
-	rm -rf $(TEST_DIR)/src/
-	docker run -t $(TAG)
