@@ -12,9 +12,11 @@ RUN cd ~/meson && \
   ~/bin/lein uberjar && \
   rm -rf target
 
-RUN echo "#!/bin/bash" > ~/bin/run-dev
-RUN echo "cd ~/meson/" >> ~/bin/run-dev
-RUN echo "lein repl" >> ~/bin/run-dev
-RUN chmod 755 ~/bin/run-dev
+RUN echo "#!/bin/bash" > ~/bin/run-dev && \
+    echo "cd ~/meson/" >> ~/bin/run-dev && \
+    echo "/root/bin/start-mesos" >> ~/bin/run-dev && \
+    echo "sleep 2" >> ~/bin/run-dev && \
+    echo "lein repl" >> ~/bin/run-dev && \
+    chmod 755 ~/bin/run-dev
 
 CMD "/root/bin/run-dev"
