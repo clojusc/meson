@@ -2,7 +2,9 @@
   "Some convenience/utility functions used in the rest of Mesomatic."
   (:require [clojure.data.json :as json]
             [clojure.java.io :as io]
-            [clojure.string :as string])
+            [clojure.string :as string]
+            [clojusc.twig :as logger]
+            [meson.config :as config])
   (:import [clojure.lang Keyword]
            [java.util UUID]))
 
@@ -90,3 +92,7 @@
   (->> (UUID/randomUUID)
        (str)
        (assoc {} :value)))
+
+(defn set-log-level
+  []
+  (logger/set-level! (config/log-ns) (config/log-level)))
