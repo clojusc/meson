@@ -6,13 +6,24 @@
     :url "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [
     [clj-http "3.7.0"]
-    [clojusc/twig "0.3.1"]
+    [clojusc/trifl "0.2.0-SNAPSHOT"]
+    [clojusc/twig "0.3.2-SNAPSHOT"]
     [dire "0.5.4"]
     [leiningen-core "2.7.1"]
     [org.clojure/clojure "1.8.0"]
     [org.clojure/core.async "0.3.443"]
     [org.clojure/data.json "0.2.6"]
     [potemkin "0.4.4"]]
+  :meson {
+    :log-level :debug
+    :log-ns [meson]
+    :mesos {
+      :cluster-deployment :local
+      :cluster-type :docker
+      :docker {
+        :container-id-file "/tmp/meson-mesos-container-id"
+        :image-name "clojusc/mesos"
+        :port-mappings "5050:5050"}}}
   :profiles {
     :uber {
       :aot :all}
@@ -80,5 +91,5 @@
         ["uberjar"]
         ["test" ":unit"]
         ["docs"]]
-    "mesos" [
-      "shell" "make" "local-travis"]})
+    "meson" [
+      "run" "-m" "meson.ops"]})
