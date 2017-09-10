@@ -1,7 +1,7 @@
 (ns meson.ops.mesos
   (:require [clojure.pprint :refer [pprint]]
             [meson.config :as config]
-            [meson.util :as util]
+            [meson.util.shell :as util]
             [taoensso.timbre :as log]
             [trifl.docs :as docs]))
 

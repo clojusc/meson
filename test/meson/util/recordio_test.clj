@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [meson.client.master :as master]
             [meson.testing.payloads :as payload]
-            [meson.util :as util]
+            [meson.util.bytes :as util]
             [meson.util.recordio :as recordio]))
 
 (def testing-host "127.0.0.1")

@@ -1,5 +1,5 @@
 (ns meson.util.recordio
-  (:require [meson.util :as util]))
+  (:require [meson.util.bytes :as util]))
 
 (defprotocol IRecordIOStream
   (get-size! [this]

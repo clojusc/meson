@@ -39,8 +39,8 @@
   ([this ^Keyword type payload framework-id content-type]
     (call this type payload framework-id content-type {}))
   ([this ^Keyword type payload framework-id content-type opts]
-    (let [data {:type (util/convert-upper type)
-                (util/convert-lower type) payload}]
+    (let [data {:type (util/keyword->upper type)
+                (util/keyword->lower type) payload}]
       (http/post
         this
         scheduler-path

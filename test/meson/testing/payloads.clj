@@ -1,5 +1,5 @@
 (ns meson.testing.payloads
-  (:require [meson.util :as util]))
+  (:require [meson.util.bytes :as util]))
 
 (defn subscribe
   []
