@@ -44,15 +44,11 @@
 
 (defn dash->under
   [str-data]
-  (string/replace "-" "_"))
+  (string/replace str-data "-" "_"))
 
-(defn edn->json
-  ""
-  [edn]
-  (->> edn
-       (map (fn [[k v]] [(dash->under (name k)) v]))
-       (into {})
-       (json/write-str)))
+(defn mesosize-key
+  [[k v]]
+  [(keyword (dash->under (name k))) v])
 
 (defn set-log-level
   []

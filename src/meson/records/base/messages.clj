@@ -12,7 +12,8 @@
   executor-id
   slave-id
   uuid
-  latest-state)]
+  latest-state
+  ])
 
 (defrecord StatusUpdateRecord [
   ;; Required
@@ -27,14 +28,16 @@
   slave-id
   framework-id
   executor-id
-  data)]
+  data
+  ])
 
 (defrecord FrameworkToExecutorMessage [
   ;; Required
   slave-id
   framework-id
   executor-id
-  data)]
+  data
+  ])
 
 (defrecord RegisterFrameworkMessage [
   ;; Required

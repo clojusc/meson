@@ -32,9 +32,11 @@
 
 (defn create-call
   ([type]
-    (create-call type nil))
+    (create-call type {}))
   ([type args]
     (case type
-      :subscribe (->Call (mesos/->FrameworkID (:framework-id args))
+      :subscribe (->Call (if-let [id (:framework-id args)]
+                           (mesos/->FrameworkID id)
+                           nil)
                          "SUBSCRIBE"
                          (create-subscribe args)))))
