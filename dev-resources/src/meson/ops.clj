@@ -33,8 +33,8 @@
     (docs/print-docstring #'run))
   ([[cmd & args]]
     (util/set-log-level)
-    (log/debug "CLI got cmd:" cmd)
-    (log/debug "CLI got args:" args)
+    (log/trace "CLI got cmd:" cmd)
+    (log/trace "CLI got args:" args)
     (case (keyword cmd)
       :help (docs/print-docstring #'run)
       :config (pprint (config/meson))

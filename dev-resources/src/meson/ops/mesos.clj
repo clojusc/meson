@@ -1,7 +1,7 @@
 (ns meson.ops.mesos
-  (:require [clojure.java.shell :as shell]
-            [clojure.pprint :refer [pprint]]
+  (:require [clojure.pprint :refer [pprint]]
             [meson.config :as config]
+            [meson.util :as util]
             [taoensso.timbre :as log]
             [trifl.docs :as docs]))
 
@@ -11,18 +11,23 @@
   (log/info "Starting local docker cluster ...")
   (let [id-file (config/docker-container-id-file)
         image-name (config/docker-image-name)]
-    (shell/sh "rm" "-f" id-file)
-    (shell/sh "docker" "pull" image-name)
-    (shell/sh "docker" "run" "-d"
-              (str "--cidfile=" id-file)
-              "-p" (config/docker-port-mappings)
-              image-name))
+    (log/debugf "Using image '%s'" image-name)
+    (util/shellf-silent "rm -f %s" id-file)
+    (util/shellf "docker pull %s" image-name)
+    (util/shellf-silent "docker run -d --cidfile %s --publish %s %s"
+                        id-file
+                        (config/docker-port-mappings)
+                        image-name))
   (log/info "Done."))
 
 (defn stop-local-docker
   []
   ""
-  (log/info "Stoping local docker cluster ..."))
+  (log/info "Stoping local docker cluster ...")
+  (let [id-file (config/docker-container-id-file)
+        id (util/shellf-silent "cat %s" id-file)]
+    (util/shellf-silent "docker stop %s" id))
+  (log/info "Done."))
 
 (defn restart-local-docker
   []
@@ -72,8 +77,8 @@
   ([]
     (docs/print-docstring #'run))
   ([[subcmd & args]]
-    (log/debug "Got subcmd:" subcmd)
-    (log/debug "Got args:" args)
+    (log/trace "Got subcmd:" subcmd)
+    (log/trace "Got args:" args)
     (case (keyword subcmd)
       nil (docs/print-docstring #'run)
       :start (start)
