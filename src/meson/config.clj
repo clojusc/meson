@@ -3,46 +3,32 @@
             [taoensso.timbre :as log])
   (:refer-clojure :exclude [name]))
 
-(defn all
-  []
-  (project/read))
+(def all (project/read))
 
-(defn meson
-  []
-  (:meson (all)))
+(def project-url (:url all))
 
-(defn log-level
-  []
-  (:log-level (meson)))
+(def client-version (:version all))
 
-(defn log-ns
-  []
-  (:log-ns (meson)))
+(def meson (:meson all))
 
-(defn mesos
-  []
-  (:mesos (meson)))
+(def log-level (:log-level meson))
 
-(defn cluster-deployment
-  []
-  (:cluster-deployment (mesos)))
+(def log-ns (:log-ns meson))
 
-(defn cluster-type
-  []
-  (:cluster-type (mesos)))
+(def mesos (:mesos meson))
 
-(defn docker
-  []
-  (:docker (mesos)))
+(def cluster-deployment (:cluster-deployment mesos))
 
-(defn docker-container-id-file
-  []
-  (:container-id-file (docker)))
+(def cluster-type (:cluster-type mesos))
 
-(defn docker-image-name
-  []
-  (:image-name (docker)))
+(def docker (:docker mesos))
 
-(defn docker-port-mappings
-  []
-  (:port-mappings (docker)))
+(def docker-container-id-file (:container-id-file docker))
+
+(def docker-image-name (:image-name docker))
+
+(def docker-port-mappings (:port-mappings docker))
+
+(def docker-agent (:agent docker))
+
+(def docker-master (:master docker))

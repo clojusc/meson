@@ -9,27 +9,28 @@
 ;;;   Local Docker   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def local-docker?
+  (and (= config/cluster-deployment :local)
+       (= config/cluster-type :docker)))
+
 (defn start-local-docker
   ""
   []
   (log/info "Starting local docker cluster ...")
-  (let [id-file (config/docker-container-id-file)
-        image-name (config/docker-image-name)]
-    (log/debugf "Using image '%s'" image-name)
-    (util/shellf-silent "rm -f %s" id-file)
-    (util/shellf "docker pull %s" image-name)
-    (util/shellf-silent "docker run -d --cidfile %s --publish %s %s"
-                        id-file
-                        (config/docker-port-mappings)
-                        image-name))
+  (log/debugf "Using image '%s'" config/docker-image-name)
+  (util/shellf-silent "rm -f %s" config/docker-container-id-file)
+  (util/shellf "docker pull %s" config/docker-image-name)
+  (util/shellf-silent "docker run -d --cidfile %s --publish %s %s"
+                      config/docker-container-id-file
+                      config/docker-port-mappings
+                      config/docker-image-name)
   (log/info "Done."))
 
 (defn stop-local-docker
   ""
   []
   (log/info "Stoping local docker cluster ...")
-  (let [id-file (config/docker-container-id-file)
-        id (util/shellf-silent "cat %s" id-file)]
+  (let [id (util/shellf-silent "cat %s" config/docker-container-id-file)]
     (util/shellf-silent "docker stop %s" id))
   (log/info "Done."))
 
@@ -44,8 +45,7 @@
   []
   (log/warn "Note that clojure.java.shell doesn't directly support TTY"
             "connections.")
-  (let [id-file (config/docker-container-id-file)
-        id (util/shellf-silent "cat %s" id-file)]
+  (let [id (util/shellf-silent "cat %s" config/docker-container-id-file)]
     (log/info
       (format (str "To connect to the running docker container, execute the "
                    "following:\n\n docker exec -it %s bash\n")
@@ -58,32 +58,28 @@
 (defn start
   ""
   []
-  (if (and (= (config/cluster-deployment) :local)
-           (= (config/cluster-type) :docker))
+  (if local-docker?
     (start-local-docker)
     (log/error "Unsupported cluster deployment and/or cluster type.")))
 
 (defn stop
   ""
   []
-  (if (and (= (config/cluster-deployment) :local)
-           (= (config/cluster-type) :docker))
+  (if local-docker?
     (stop-local-docker)
     (log/error "Unsupported cluster deployment and/or cluster type.")))
 
 (defn restart
   ""
   []
-  (if (and (= (config/cluster-deployment) :local)
-           (= (config/cluster-type) :docker))
+  (if local-docker?
     (restart-local-docker)
     (log/error "Unsupported cluster deployment and/or cluster type.")))
 
 (defn connect
   ""
   []
-  (if (and (= (config/cluster-deployment) :local)
-           (= (config/cluster-type) :docker))
+  (if local-docker?
     (connect-local-docker)
     (log/error "Unsupported cluster deployment and/or cluster type.")))
 

@@ -23,7 +23,9 @@
       :docker {
         :container-id-file "/tmp/meson-mesos-container-id"
         :image-name "clojusc/mesos"
-        :port-mappings "5050:5050"}}}
+        :master "localhost:5050"
+        :agent "localhost:5051"
+        :port-mappings "5050-5051:5050-5051"}}}
   :profiles {
     :uber {
       :aot :all}

@@ -97,7 +97,7 @@
 
 (defn set-log-level
   []
-  (logger/set-level! (config/log-ns) (config/log-level)))
+  (logger/set-level! config/log-ns config/log-level))
 
 (defn shell
   ([cmd-str]

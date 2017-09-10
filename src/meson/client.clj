@@ -2,15 +2,16 @@
   (:require [clojure.string :as string]
             [clojusc.twig :as logger]
             [meson.client.common :as common]
+            [meson.config :as config]
             [meson.const :as const]
             [meson.http.core :as http]))
 
 (def user-agent
   (format "Meson REST Client/%s (Clojure %s; Java %s) (+%s)"
-          const/client-version
+          config/client-version
           const/clj-version
           const/java-version
-          const/project-url))
+          config/project-url))
 
 (def fields
   "Fields are maintained separately from the record so that they may be
@@ -31,7 +32,7 @@
      :debug false
      :debug-body false
      :throw-entire-message? false
-     :log-level :error
+     :log-level config/log-level
      :headers {
        :user-agent user-agent}
      :client-params {

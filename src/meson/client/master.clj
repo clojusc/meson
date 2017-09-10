@@ -4,7 +4,7 @@
             [meson.client.common :as common]
             [meson.client.impl.master :as master]
             [meson.client.impl.master.scheduler :as scheduler]
-            [meson.client.impl.config :as config]
+            [meson.client.impl.config :as client-config]
             [meson.client.impl.debug :as debug]
             [meson.client.impl.files :as files]
             [meson.client.impl.health :as health]
@@ -12,19 +12,20 @@
             [meson.client.protocols.master.scheduler :refer [IScheduler]]
             [meson.client.protocols.common :refer
               [IConfig IDebug IFiles IHealth]]
-            [potemkin])
+            [meson.config :as config]
+            [potemkin :refer [import-vars]])
   (:refer-clojure :exclude [read]))
 
 (def client-fields
   (merge
     client/fields
-    {:master "localhost:5050"}))
+    {:master config/docker-master}))
 
 (defrecord MesonMaster [])
 
 (extend MesonMaster IMaster master/behaviour)
 (extend MesonMaster IScheduler scheduler/behaviour)
-(extend MesonMaster IConfig config/behaviour)
+(extend MesonMaster IConfig client-config/behaviour)
 (extend MesonMaster IDebug debug/behaviour)
 (extend MesonMaster IFiles files/behaviour)
 (extend MesonMaster IHealth health/behaviour)
@@ -49,7 +50,7 @@
         (scheduler/start c)
         c))))
 
-(potemkin/import-vars
+(import-vars
   [meson.client.impl.master
     bring-down-machines
     bring-up-machines

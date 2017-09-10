@@ -37,7 +37,7 @@
     (log/trace "CLI got args:" args)
     (case (keyword cmd)
       :help (docs/print-docstring #'run)
-      :config (pprint (config/meson))
+      :config (pprint config/meson)
       :mesos (mesos/run args)
       ;; Aliases
       :--help (docs/print-docstring #'run)
