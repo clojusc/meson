@@ -38,6 +38,22 @@
       (name)
       (string/lower-case)))
 
+(defn keyword->enum
+  [keywd]
+  (keyword->upper keywd))
+
+(defn dash->under
+  [str-data]
+  (string/replace "-" "_"))
+
+(defn edn->json
+  ""
+  [edn]
+  (->> edn
+       (map (fn [[k v]] [(dash->under (name k)) v]))
+       (into {})
+       (json/write-str)))
+
 (defn set-log-level
   []
   (logger/set-level! config/log-ns config/log-level))
