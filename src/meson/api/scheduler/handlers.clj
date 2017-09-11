@@ -1,4 +1,4 @@
-(ns meson.scheduler.handlers
+(ns meson.api.scheduler.handlers
   (:require [clojure.tools.logging :as log]
             [clojusc.twig :as twig]))
 
