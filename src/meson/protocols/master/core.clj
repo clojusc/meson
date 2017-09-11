@@ -28,6 +28,8 @@
     "Information about registered agents.
 
     See: http://mesos.apache.org/documentation/latest/endpoints/master/slaves/")
+  (get-executors [this]
+    "")
   (get-frameworks [this]
     "Exposes the frameworks info.
 
@@ -40,6 +42,8 @@
     "Retrieves the maintenance status of the cluster.
 
     See: http://mesos.apache.org/documentation/latest/endpoints/master/maintenance/status/")
+  (get-master [this]
+    "")
   (get-quota [this]
     "Returns the currently set quotas as JSON.
 
@@ -62,6 +66,8 @@
     respectively.
 
     See: http://mesos.apache.org/documentation/latest/endpoints/master/tasks/")
+  (get-weights [this]
+    "")
   (redirect [this]
     "Redirects to the leading Master.
 
@@ -74,10 +80,16 @@
     "Reserve resources dynamically on a specific agent.
 
     See: http://mesos.apache.org/documentation/latest/endpoints/master/reserve/")
+  (reserve-resources [this agent_id resources]
+    "")
   (set-quota [this role]
     "Sets the quota for a role.
 
     See: http://mesos.apache.org/documentation/latest/endpoints/master/quota/")
+  (start-maintenance [this]
+    "")
+  (stop-maintenance [this]
+    "")
   (teardown-framework [this framework-id]
     "Tears down a running framework by shutting down all tasks/executors and
     removing the framework.
@@ -87,6 +99,10 @@
     "Unreserve resources dynamically on a specific agent.
 
     See: http://mesos.apache.org/documentation/latest/endpoints/master/unreserve/")
+  (unreserve-resources [this agent-id resources]
+    "")
+  (update-maintenance-schedule [this]
+    "")
   (update-maintenance-scheduler [this]
     "updates the maintenance schedule.
 
@@ -94,4 +110,6 @@
   (update-role-weights [this data]
     "Updates weights for the specified roles.
 
-    See: http://mesos.apache.org/documentation/latest/endpoints/master/weights/"))
+    See: http://mesos.apache.org/documentation/latest/endpoints/master/weights/")
+  (update-weights [this weight-infos] [this role weight]
+    ""))

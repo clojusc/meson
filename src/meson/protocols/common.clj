@@ -37,7 +37,11 @@
   (stop-profiler [this]
     "Stop using google perftools.
 
-    See: http://mesos.apache.org/documentation/latest/endpoints/profiler/stop/"))
+    See: http://mesos.apache.org/documentation/latest/endpoints/profiler/stop/")
+  (set-loegging-level [this level duration]
+    "")
+  (get-logging-level [this]
+    ""))
 
 (defprotocol IFiles
   ""
@@ -62,7 +66,9 @@
     "This endpoint reads data from a file at a given offset and for a given
     length.
 
-    See: http://mesos.apache.org/documentation/latest/endpoints/files/read/"))
+    See: http://mesos.apache.org/documentation/latest/endpoints/files/read/")
+  (list-files [this path]
+    ""))
 
 (defprotocol IHealth
   ""
