@@ -1,4 +1,4 @@
-(ns meson.client.protocols.common
+(ns meson.protocols.common
   "Collects Mesos HTTP API common to both masters and agents, collecting them
   into appropriate groupings.
 

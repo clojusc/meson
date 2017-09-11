@@ -1,4 +1,4 @@
-(ns meson.client.protocols.master
+(ns meson.protocols.master.core
   "Collects methods that are specific to the master and not contained in any of
   the `meson.client.protocols.common` protocols.
 

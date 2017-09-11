@@ -3,14 +3,22 @@
             [clojure.tools.logging :as log]
             [clj-http.client :as httpc]
             [clojusc.twig :refer [pprint]]
-            [meson.client.common :as common]
+            [meson.config :as config]
+            [meson.const :as const]
             [meson.error :as error]
             [meson.http.status-code :as status-code]
-            [meson.util :as util])
+            [meson.util.core :as util])
   (:refer-clojure :exclude [get]))
 
 (def json-content-type "application/json")
 (def keep-alive "keep-alive")
+
+(def user-agent
+  (format "Meson REST Client/%s (Clojure %s; Java %s) (+%s)"
+          config/client-version
+          const/clj-version
+          const/java-version
+          config/project-url))
 
 (defn merge-options
   ""
@@ -47,19 +55,30 @@
   [verb url options]
   ((get-http-verb-func verb) url options))
 
+(defn get-context
+  ""
+  [this]
+  (format "%s%s" (:base-path this) (:endpoint this)))
+
+(defn get-url
+  ""
+  [this path]
+  (format "%s://%s:%s%s%s"
+    (:scheme this) (:host this) (:port this) (get-context this) path))
+
 (defn delete
   ""
   [c path & {:keys [body opts]}]
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (call :delete
-          (common/get-url c path)
+          (get-url c path)
           options)))
 
 (defn get
   ""
   [c path & {:keys [opts status-only] :as kwargs}]
-  (as-> (common/get-url c path) data
+  (as-> (get-url c path) data
         (call :get data (:options (merge-options c opts)))
         (into data {:status-only status-only})
         (parse-response data)))
@@ -70,7 +89,7 @@
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (call :post
-          (common/get-url c path)
+          (get-url c path)
           options)))
 
 (defn put
@@ -79,7 +98,7 @@
   (let [options (merge-options c opts {:body body})]
     (log/debug "Options:" (pprint options))
     (call :put
-          (common/get-url c path)
+          (get-url c path)
           options)))
 
 (error/add-handler

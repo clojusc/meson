@@ -1,16 +1,8 @@
-(ns meson.client-test
+(ns meson.client.common-test
   (:require [clojure.test :refer :all]
             [meson.client.common :as common]))
 
 ;;; Unit Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(deftest ^:unit user-agent
-  (is
-    (not
-      (nil?
-        (re-matches
-          #"Meson REST Client/.* \(Clojure .*; Java .*\) \(\+https://.*\)"
-          client/user-agent)))))
 
 (deftest ^:unit add-host
   (is (= (common/add-host "myhost:myport" {:a "a"})

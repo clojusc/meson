@@ -1,39 +1,51 @@
-(ns meson.client.impl.master)
+(ns meson.client.impl.master.core)
 
-(defn bring-down-machines [this machines]
+(defn bring-down-machines
+  [this machines]
   :not-yet-implemented)
 
-(defn bring-up-machines [this machines]
+(defn bring-up-machines
+  [this machines]
   :not-yet-implemented)
 
-(defn create-volumes [this agent-id volumes]
+(defn create-volumes
+  [this agent-id volumes]
   :not-yet-implemented)
 
-(defn destroy-volumes [this agent-id volumes]
+(defn destroy-volumes
+  [this agent-id volumes]
   :not-yet-implemented)
 
-(defn get-agents [this]
+(defn get-agents
+  [this]
   :not-yet-implemented)
 
-(defn get-frameworks [this]
+(defn get-frameworks
+  [this]
   :not-yet-implemented)
 
-(defn get-maintenance-schedule [this]
+(defn get-maintenance-schedule
+  [this]
   :not-yet-implemented)
 
-(defn get-maintenance-status [this]
+(defn get-maintenance-status
+  [this]
   :not-yet-implemented)
 
-(defn get-quota [this]
+(defn get-quota
+  [this]
   :not-yet-implemented)
 
-(defn get-registry [this]
+(defn get-registry
+  [this]
   :not-yet-implemented)
 
-(defn get-roles [this]
+(defn get-roles
+  [this]
   :not-yet-implemented)
 
-(defn get-state-summary [this]
+(defn get-state-summary
+  [this]
   :not-yet-implemented)
 
 (defn get-tasks
@@ -42,28 +54,36 @@
   ([this limit offset order]
     :not-yet-implemented))
 
-(defn redirect [this]
+(defn redirect
+  [this]
   :not-yet-implemented)
 
-(defn remove-quota [this role]
+(defn remove-quota
+  [this role]
   :not-yet-implemented)
 
-(defn reserve [this agent-id resources]
+(defn reserve
+  [this agent-id resources]
   :not-yet-implemented)
 
-(defn set-quota [this role]
+(defn set-quota
+  [this role]
   :not-yet-implemented)
 
-(defn teardown-framework [this framework-id]
+(defn teardown-framework
+  [this framework-id]
   :not-yet-implemented)
 
-(defn unreserve [this agent-id resources]
+(defn unreserve
+  [this agent-id resources]
   :not-yet-implemented)
 
-(defn update-maintenance-scheduler [this]
+(defn update-maintenance-scheduler
+  [this]
   :not-yet-implemented)
 
-(defn update-role-weights [this data]
+(defn update-role-weights
+  [this data]
   :not-yet-implemented)
 
 (def behaviour

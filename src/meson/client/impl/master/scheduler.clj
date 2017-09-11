@@ -4,7 +4,7 @@
             [clojure.string :as string]
             [clojure.tools.logging :as log]
             [meson.http.core :as http]
-            [meson.util :as util])
+            [meson.util.core :as util])
   (:import [clojure.lang Keyword]))
 
 (def scheduler-path "api/v1/scheduler")

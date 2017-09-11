@@ -1,22 +1,20 @@
 (ns meson.client.agent
   (:require [clojusc.twig :as logger]
-            [meson.client :as client]
             [meson.client.common :as common]
-            [meson.client.impl.agent :as agent]
+            [meson.client.impl.agent.core :as agent]
             [meson.client.impl.config :as client-config]
             [meson.client.impl.debug :as debug]
             [meson.client.impl.files :as files]
             [meson.client.impl.health :as health]
-            [meson.client.protocols.agent :refer [IAgent]]
-            [meson.client.protocols.common :refer
-              [IConfig IDebug IFiles IHealth]]
             [meson.config :as config]
+            [meson.protocols.agent.core :refer [IAgent]]
+            [meson.protocols.common :refer [IConfig IDebug IFiles IHealth]]
             [potemkin :refer [import-vars]])
   (:refer-clojure :exclude [read]))
 
 (def client-fields
   (merge
-    client/fields
+    common/fields
     {:agent config/docker-agent}))
 
 (defrecord MesonAgent [])
@@ -40,7 +38,7 @@
          (map->MesonAgent))))
 
 (import-vars
-  [meson.client.impl.agent
+  [meson.client.impl.agent.core
     get-container-status
     get-resource-status]
   [meson.client.impl.config

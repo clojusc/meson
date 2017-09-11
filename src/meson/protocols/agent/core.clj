@@ -1,4 +1,4 @@
-(ns meson.client.protocols.agent
+(ns meson.protocols.agent.core
   "Collects methods that are specific to the agent and not contained in any of
   the `meson.client.protocols.common` protocols.
 

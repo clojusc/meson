@@ -28,7 +28,7 @@
         :agent "localhost:5051"
         :port-mappings "5050-5051:5050-5051"}}}
   :profiles {
-    :uber {
+    :uberjar {
       :aot :all}
     :test {
       :exclusions [org.clojure/clojure]
@@ -95,4 +95,4 @@
         ["test" ":unit"]
         ["docs"]]
     "meson" [
-      "run" "-m" "meson.ops"]})
+      "run" "-m" "meson.ops.core"]})

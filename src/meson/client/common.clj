@@ -1,19 +1,35 @@
 (ns meson.client.common
   (:require [clojure.string :as string]
-            [clojusc.twig :as twig]))
+            [clojusc.twig :as twig]
+            [meson.config :as config]
+            [meson.http.core :as http]))
 
-;;; Common Methods ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Common Data ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn get-context
-  ""
-  [this]
-  (format "%s%s" (:base-path this) (:endpoint this)))
-
-(defn get-url
-  ""
-  [this path]
-  (format "%s://%s:%s%s%s"
-    (:scheme this) (:host this) (:port this) (get-context this) path))
+(def fields
+  "Fields are maintained separately from the record so that they may be
+  re-used by concrete clients (e.g., Scheduler and Executor clients)."
+  {:host nil
+   :port nil
+   :master nil
+   :agent nil
+   :base-path "/"
+   :endpoint ""
+   :version "1"
+   :scheme "http"
+   :event-conn nil
+   :cmd-conn nil
+   :options {
+     :content-type "application/json"
+     :accept "application/json"
+     :debug false
+     :debug-body false
+     :throw-entire-message? false
+     :log-level config/log-level
+     :headers {
+       :user-agent http/user-agent}
+     :client-params {
+       "http.useragent" http/user-agent}}})
 
 ;;; Common Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

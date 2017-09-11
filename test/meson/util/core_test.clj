@@ -1,7 +1,6 @@
-(ns meson.util-test
+(ns meson.util.core-test
   (:require [clojure.test :refer :all]
-            [meson.core :as meson]
-            [meson.util :as util]))
+            [meson.util.core :as util]))
 
 ;;; Unit Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

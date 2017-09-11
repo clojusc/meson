@@ -11,17 +11,16 @@
             [clojure.tools.namespace.repl :as repl]
             [clojure.walk :refer [walk macroexpand-all]]
             [clojusc.twig :as twig]
-            [meson.client :as client]
-            [meson.client.impl.master.scheduler :as scheduler]
+            [meson.client.agent :as agent]
+            [meson.client.common :as common]
             [meson.client.master :as master]
-            [meson.core :as meson]
             [meson.http.core :as http]
             [meson.records.core :as records]
             [meson.records.scheduler :as sched-records]
             [meson.scheduler.core :as s2]
             [meson.scheduler.handlers :refer [default]
                                       :rename {default default-handler}]
-            [meson.util :as util]
+            [meson.util.core :as util]
             [meson.util.recordio :as recordio]))
 
 (twig/set-level! '[meson] :debug)

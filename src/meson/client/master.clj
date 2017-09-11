@@ -1,24 +1,22 @@
 (ns meson.client.master
   (:require [clojusc.twig :as logger]
-            [meson.client :as client]
             [meson.client.common :as common]
-            [meson.client.impl.master :as master]
+            [meson.client.impl.master.core :as master]
             [meson.client.impl.master.scheduler :as scheduler]
             [meson.client.impl.config :as client-config]
             [meson.client.impl.debug :as debug]
             [meson.client.impl.files :as files]
             [meson.client.impl.health :as health]
-            [meson.client.protocols.master :refer [IMaster]]
-            [meson.client.protocols.master.scheduler :refer [IScheduler]]
-            [meson.client.protocols.common :refer
-              [IConfig IDebug IFiles IHealth]]
             [meson.config :as config]
+            [meson.protocols.common :refer [IConfig IDebug IFiles IHealth]]
+            [meson.protocols.master.core :refer [IMaster]]
+            [meson.protocols.master.scheduler :refer [IScheduler]]
             [potemkin :refer [import-vars]])
   (:refer-clojure :exclude [read]))
 
 (def client-fields
   (merge
-    client/fields
+    common/fields
     {:master config/docker-master}))
 
 (defrecord MesonMaster [])
@@ -51,7 +49,7 @@
         c))))
 
 (import-vars
-  [meson.client.impl.master
+  [meson.client.impl.master.core
     bring-down-machines
     bring-up-machines
     create-volumes

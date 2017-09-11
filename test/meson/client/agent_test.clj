@@ -1,7 +1,7 @@
 (ns meson.client.agent-test
   (:require [clojure.test :refer :all]
-            [meson.client.common :as common]
-            [meson.client.agent :as agent]))
+            [meson.client.agent :as agent]
+            [meson.http.core :as http]))
 
 (def testing-agent {:agent "127.0.0.1:5051"})
 
@@ -15,11 +15,11 @@
 
 (deftest ^:unit get-context
   (let [c (agent/create)]
-    (is (= (common/get-context c) "/"))))
+    (is (= (http/get-context c) "/"))))
 
 (deftest ^:unit get-url
   (let [c (agent/create {:agent "myhost:8080"})]
-    (is (= (common/get-url c "") "http://myhost:8080/"))))
+    (is (= (http/get-url c "") "http://myhost:8080/"))))
 
 ;;; Integration Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

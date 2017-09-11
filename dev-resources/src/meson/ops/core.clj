@@ -1,8 +1,8 @@
-(ns meson.ops
+(ns meson.ops.core
   (:require [clojure.pprint :refer [pprint]]
             [meson.config :as config]
             [meson.ops.mesos :as mesos]
-            [meson.util :as util]
+            [meson.util.core :as util]
             [taoensso.timbre :as log]
             [trifl.docs :as docs])
   (:gen-class))

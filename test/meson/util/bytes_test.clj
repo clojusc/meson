@@ -1,6 +1,5 @@
 (ns meson.util.bytes-test
   (:require [clojure.test :refer :all]
-            [meson.core :as meson]
             [meson.util.bytes :as util]))
 
 ;;; Unit Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

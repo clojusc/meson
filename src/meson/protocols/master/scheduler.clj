@@ -1,4 +1,4 @@
-(ns meson.client.protocols.master.scheduler
+(ns meson.protocols.master.scheduler
   "For all of the below defined methods, more detailed information is available
   here:
 

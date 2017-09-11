@@ -1,4 +1,4 @@
-(ns meson.util
+(ns meson.util.core
   "Some convenience/utility functions used in the rest of Mesomatic."
   (:require [clojure.data.json :as json]
             [clojure.java.io :as io]

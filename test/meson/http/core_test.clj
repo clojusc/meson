@@ -4,7 +4,13 @@
 
 ;;; Unit Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; TBD
+(deftest ^:unit user-agent
+  (is
+    (not
+      (nil?
+        (re-matches
+          #"Meson REST Client/.* \(Clojure .*; Java .*\) \(\+https://.*\)"
+          http/user-agent)))))
 
 ;;; Integration Tests ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
