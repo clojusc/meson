@@ -1,6 +1,5 @@
 (ns meson.records.core
-  (:require [clojure.walk :refer [postwalk]]
-            [meson.util.core :as util]))
+  (:require [meson.util.core :as util]))
 
 (defn prepare-element
   [element]
@@ -11,4 +10,4 @@
 
 (defn prepare-data
   [data]
-  (postwalk (fn [x] (if (map? x) (prepare-element x) x)) data))
+  (util/walk-keys data prepare-element))

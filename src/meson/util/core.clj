@@ -3,6 +3,7 @@
   (:require [clojure.data.json :as json]
             [clojure.java.io :as io]
             [clojure.string :as string]
+            [clojure.walk :refer [postwalk]]
             [clojusc.twig :as logger]
             [meson.config :as config]
             [taoensso.timbre :as log])
@@ -46,9 +47,21 @@
   [str-data]
   (string/replace str-data "-" "_"))
 
+(defn under->dash
+  [str-data]
+  (string/replace str-data "_" "-"))
+
 (defn mesosize-key
   [[k v]]
   [(keyword (dash->under (name k))) v])
+
+(defn clojurize-key
+  [[k v]]
+  [(keyword (under->dash (name k))) v])
+
+(defn walk-keys
+  [data kv-fn]
+  (postwalk (fn [x] (if (map? x) (kv-fn x) x)) data))
 
 (defn set-log-level
   []
