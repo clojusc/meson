@@ -27,7 +27,7 @@
     (is (= (get-in json [:subscribed :framework_id :value])
            "5f1bf690-0145-44be-96ae-145e5c51fccc-0017"))))
 
-(deftest ^:unit next
+(deftest ^:unit next!
   (let [bytes (recordio/next! (payload/subscribed))
         json (util/bytes->json bytes)]
     (is (= (:type json) :subscribed))
