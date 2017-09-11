@@ -1,5 +1,6 @@
 (ns meson.util.recordio
-  (:require [meson.util.bytes :as util]))
+  (:require [meson.util.bytes :as util]
+            [taoensso.timbre :as log]))
 
 (defprotocol IRecordIOStream
   (get-size! [this]
@@ -25,6 +26,7 @@
       (if (= byte-index asize)
         array
         (do
+          (log/debug "Reading byte at index" byte-index)
           (aset-byte array byte-index (.read stream))
           (recur (inc byte-index)))))))
 
