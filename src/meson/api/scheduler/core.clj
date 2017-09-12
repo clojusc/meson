@@ -26,14 +26,14 @@
 
 (defn subscribe
   ([]
-    (subscribe (message/create-call :subscribe
-                                     {:framework-info {
-                                      :user "user1"
-                                      :name "a-framework"}})))
+    (subscribe {:framework-info {
+                :user "user1"
+                :name "a-framework"}}))
   ([args]
     (log/info "args:" args)
     (let [chan (async/chan)
-          prepared-data (records/prepare-data args)
+          data (message/create-call :subscribe args)
+          prepared-data (records/prepare-data data)
           response (httpc/post "http://localhost:5050/api/v1/scheduler"
                                {:accept :json
                                 :content-type :json
