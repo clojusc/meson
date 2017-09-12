@@ -26,7 +26,7 @@
       (if (= byte-index asize)
         array
         (do
-          (log/debug "Reading byte at index" byte-index)
+          ;(log/trace "Reading byte at index" byte-index)
           (aset-byte array byte-index (.read stream))
           (recur (inc byte-index)))))))
 
