@@ -17,19 +17,9 @@
    :endpoint ""
    :version "1"
    :scheme "http"
-   :event-conn nil
-   :cmd-conn nil
-   :options {
-     :content-type "application/json"
-     :accept "application/json"
-     :debug false
-     :debug-body false
-     :throw-entire-message? false
-     :log-level config/log-level
-     :headers {
-       :user-agent http/user-agent}
-     :client-params {
-       "http.useragent" http/user-agent}}})
+   :event-channel nil
+   :cmd-channel nil
+   :options http/base-options})
 
 ;;; Common Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

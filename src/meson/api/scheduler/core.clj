@@ -61,11 +61,8 @@
           data (message/create-call :subscribe args)
           prepared-data (records/prepare-data data)
           response (httpc/post "http://localhost:5050/api/v1/scheduler"
-                               {:accept :json
-                                :content-type :json
-                                :form-params prepared-data
-                                :throw-exceptions false
-                                :as :stream})
+                               (assoc http/stream-options
+                                      :form-params prepared-data))
           stream (:body response)]
         (stream->msgs chan stream)
         (msgs->handler chan handler)

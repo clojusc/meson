@@ -10,7 +10,9 @@
             [meson.util.core :as util])
   (:refer-clojure :exclude [get]))
 
+;; XXX remove
 (def json-content-type "application/json")
+;; XXX remove
 (def keep-alive "keep-alive")
 
 (def user-agent
@@ -19,6 +21,33 @@
           const/clj-version
           const/java-version
           config/project-url))
+
+(def base-options
+  ""
+  {:content-type :json
+   :accept :json
+   :debug false
+   :debug-body false
+   :throw-exceptions false
+   :throw-entire-message? false
+   :log-level config/log-level
+   :headers {
+     :user-agent user-agent}
+   :client-params {
+     "http.useragent" user-agent}})
+
+(def debug-options
+  ""
+  (merge
+    base-options
+    {:debug true
+     :debug-body true
+     :throw-exceptions true
+     :throw-entire-message? true}))
+
+(def stream-options
+  ""
+  (assoc base-options :as :stream))
 
 (defn merge-options
   ""
