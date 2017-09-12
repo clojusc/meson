@@ -20,7 +20,9 @@
 
 ## About [&#x219F;](#contents)
 
-TBD
+This project is a work in progress. 
+
+Meson aims to provide an HTTP-only Clojure client API for Mesos with no dependencies upon the Mesos Java library nor protobufs, thus making installation and dependencies much easier to manage.
 
 
 ## Dependencies [&#x219F;](#contents)
@@ -30,6 +32,15 @@ TBD
   * You need a running Mesos deployment
   * You need to have built the Mesos protobuf Java drivers
 * `lein`
+
+Mesos version tracking:
+
+| Meson Version              | Meson Status | Mesos | Clojure | Java                   |
+|----------------------------|--------------|-------|---------|------------------------|
+| 0.4.0 (beta)               | future       | ???   | ???     | ???                    |
+| 0.3.0 (alpha)              | future       | ???   | ???     | ???                    |
+| 0.2.0-SNAPSHOT (prototype) | in progress  | 1.3   | 1.8.0   | 8 (build 1.8.0_91-b14) |
+| 0.1.0-SNAPSHOT (prototype) | released     | 1.0   | 1.8.0   | 8 (build 1.8.0_91-b14) |
 
 
 ## Documentation [&#x219F;](#contents)
