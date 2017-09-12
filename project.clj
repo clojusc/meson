@@ -85,7 +85,7 @@
       "with-profile" "+test" "do"
         ["check"] ["kibit"] ["outlaw"]]
     "docs" [
-      "with-profile" "+docs" "do" "codox"]
+      "with-profile" "+docs" "codox"]
     "travis" [
       "do"
         ["version"]
