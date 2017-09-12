@@ -48,11 +48,15 @@
                                 :throw-exceptions false
                                 :as :stream})
           stream (:body response)]
+        ;; XXX move into dedicated function
+        ;; Write the messages to the channel as they come in
         (async/go
           (loop []
             (async/>! chan (parse-data stream))
             (recur))
           (async/close! chan))
+        ;; XXX move into dedicated function
+        ;; When a message is received, call the handler
         (async/go
           (loop []
             (when-let [received (async/<! chan)]
