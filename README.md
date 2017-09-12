@@ -33,7 +33,6 @@ installation and dependencies much easier to manage.
 * Java
 * Mesos 1.3+
   * You need a running Mesos deployment
-  * You need to have built the Mesos protobuf Java drivers
 * `lein`
 
 
@@ -58,7 +57,32 @@ Meson API Reference docs are available here:
 Start up the REPL (and be sure to have a running Mesos deployment), then:
 
 ```clj
-
+(require '[clojure.core.async :as async]
+         '[clojure.pprint :refer [pprint]]
+         '[meson.api.scheduler.core :as scheduler])
+(def framework-info {
+  :framework-info {
+    :user "user1"
+    :name "a-framework"}})
+(def channel (scheduler/subscribe framework-info))
+(def channel (s2/subscribe framework-info))
+(def result (async/<!! channel)
+(pprint result)
+```
+Which should give something like:
+```clj
+{:subscribed
+ {:framework-id {:value "6919832b-083e-4db5-89ae-a0d1d222510a-0016"},
+  :heartbeat-interval-seconds 15.0,
+  :master-info
+  {:address {:hostname "0414d10a4f36", :ip "172.17.0.2", :port 5050},
+   :hostname "0414d10a4f36",
+   :id "6919832b-083e-4db5-89ae-a0d1d222510a",
+   :ip 33558956,
+   :pid "master@172.17.0.2:5050",
+   :port 5050,
+   :version "1.3.1"}},
+ :type :subscribed}
 ```
 
 
