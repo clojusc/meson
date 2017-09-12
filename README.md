@@ -55,7 +55,7 @@ Meson provides some `lein` commands you can use while developing in the library:
 * `lein meson mesos stop`
 * `lein meson mesos restart`
 
-These mey also be used from the Meson REPL (using the `dev` profile):
+These may also be used from the Meson REPL (using the `dev` profile):
 
 ```clj
 (require '[meson.ops.mesos :as mesos])
