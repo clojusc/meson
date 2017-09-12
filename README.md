@@ -60,12 +60,10 @@ Start up the REPL (and be sure to have a running Mesos deployment), then:
 (require '[clojure.core.async :as async]
          '[clojure.pprint :refer [pprint]]
          '[meson.api.scheduler.core :as scheduler])
-(def framework-info {
-  :framework-info {
-    :user "user1"
-    :name "a-framework"}})
+(def framework-info {:framework-info 
+                     {:user "user1"
+                      :name "a-framework"}})
 (def channel (scheduler/subscribe framework-info))
-(def channel (s2/subscribe framework-info))
 (def result (async/<!! channel)
 (pprint result)
 ```
