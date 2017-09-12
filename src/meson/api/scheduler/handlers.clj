@@ -1,6 +1,6 @@
 (ns meson.api.scheduler.handlers
-  (:require [clojure.tools.logging :as log]
-            [clojusc.twig :as twig]))
+  (:require [clojusc.twig :as twig]
+            [taoensso.timbre :as log]))
 
 (defn- debug-trace
   [type msg]
@@ -16,40 +16,49 @@
   For the types of messages that are handled, see the 'Events' section here:
 
   * http://mesos.apache.org/documentation/latest/scheduler-http-api/"
-  (comp :type last vector))
+  :type)
 
 (defmethod default :subscribed
-  [state msg]
-  (debug-trace "SUBSCRIBED" msg))
+  [msg]
+  (debug-trace "SUBSCRIBED" msg)
+  msg)
 
 (defmethod default :offers
-  [state msg]
-  (debug-trace "OFFERS" msg))
+  [msg]
+  (debug-trace "OFFERS" msg)
+  msg)
 
 (defmethod default :rescind
-  [state msg]
-  (debug-trace "RESCIND" msg))
+  [msg]
+  (debug-trace "RESCIND" msg)
+  msg)
 
 (defmethod default :update
-  [state msg]
-  (debug-trace "UPDATE" msg))
+  [msg]
+  (debug-trace "UPDATE" msg)
+  msg)
 
 (defmethod default :message
-  [state msg]
-  (debug-trace "MESSAGE" msg))
+  [msg]
+  (debug-trace "MESSAGE" msg)
+  msg)
 
 (defmethod default :failure
-  [state msg]
-  (debug-trace "FAILURE" msg))
+  [msg]
+  (debug-trace "FAILURE" msg)
+  msg)
 
 (defmethod default :error
-  [state msg]
-  (debug-trace "ERROR" msg))
+  [msg]
+  (debug-trace "ERROR" msg)
+  msg)
 
 (defmethod default :heartbeat
-  [state msg]
-  (debug-trace "HEARTBEAT" msg))
+  [msg]
+  (debug-trace "HEARTBEAT" msg)
+  msg)
 
 (defmethod default :default
-  [state msg]
-  (debug-trace "unknown type of" msg))
+  [msg]
+  (debug-trace "unknown type of" msg)
+  msg)
