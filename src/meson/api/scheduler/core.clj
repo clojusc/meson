@@ -12,6 +12,9 @@
             [meson.util.recordio :as recordio]
             [taoensso.timbre :as log]))
 
+;; XXX Need to move this code into mesos client scheduler implementation and
+;;     then do a potemkin import here
+
 (defn prepare-element
   [element]
   (->> element
