@@ -5,6 +5,7 @@
             [clojure.java.io :as io]
             [clojure.pprint :refer [pprint]]
             [clojusc.twig :as twig]
+            [meson.api.scheduler.handlers :as scheduler-handlers]
             [meson.http.core :as http]
             [meson.records.core :as records]
             [meson.records.scheduler :as message]
@@ -28,11 +29,14 @@
       (util/walk-keys prepare-element)))
 
 (defn subscribe
+  ;; XXX arity-0 is just temporary, to ease dev
   ([]
     (subscribe {:framework-info {
                 :user "user1"
                 :name "a-framework"}}))
   ([args]
+    (subscribe args scheduler-handlers/default))
+  ([args handler]
     (log/info "args:" args)
     (let [chan (async/chan)
           data (message/create-call :subscribe args)
@@ -49,4 +53,9 @@
             (async/>! chan (parse-data stream))
             (recur))
           (async/close! chan))
+        (async/go
+          (loop []
+            (when-let [received (async/<! chan)]
+              (handler received)
+              (recur))))
       chan)))
