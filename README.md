@@ -14,6 +14,7 @@
 * [About](#about-)
 * [Dependencies](#dependencies-)
 * [Versions](#versions-)
+* [Quick Start](#quick-start-)
 * [Documentation](#documentation-)
 * [Usage](#usage-)
 * [License](#license-)
@@ -21,10 +22,10 @@
 
 ## About [&#x219F;](#contents)
 
-This project is a work in progress. 
+This project is a work in progress.
 
-Meson aims to provide an HTTP-only Clojure client API for Mesos with no 
-dependencies upon the Mesos Java library nor protobufs, thus making 
+Meson aims to provide an HTTP-only Clojure client API for Mesos with no
+dependencies upon the Mesos Java library nor protobufs, thus making
 installation and dependencies much easier to manage.
 
 
@@ -46,6 +47,27 @@ installation and dependencies much easier to manage.
 | 0.1.0-SNAPSHOT (prototype) | released     | 1.0   | 1.8.0   | 8 (build 1.8.0_91-b14) |
 
 
+## Quick Start [&#x219F;](#contents)
+
+Meson provides some `lein` commands you can use while developing in the library:
+
+* `lein meson mesos start`
+* `lein meson mesos stop`
+* `lein meson mesos restart`
+
+These mey also be used from the Meson REPL (using the `dev` profile):
+
+```clj
+(require '[meson.ops.mesos :as mesos])
+(mesos/start-local-docker)
+(mesos/stop-local-docker)
+(mesos/restart-local-docker)
+```
+
+These will start a Docker container running with locahost ports 5050 and 5051
+mapped to those of the running Mesos container.
+
+
 ## Documentation [&#x219F;](#contents)
 
 Meson API Reference docs are available here:
@@ -60,7 +82,7 @@ Start up the REPL (and be sure to have a running Mesos deployment), then:
 (require '[clojure.core.async :as async]
          '[clojure.pprint :refer [pprint]]
          '[meson.api.scheduler.core :as scheduler])
-(def framework-info {:framework-info 
+(def framework-info {:framework-info
                      {:user "user1"
                       :name "a-framework"}})
 (def channel (scheduler/subscribe framework-info))
