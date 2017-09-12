@@ -28,6 +28,25 @@
       (recordio/next! :json)
       (util/walk-keys prepare-element)))
 
+(defn stream->msgs
+  "As data is available on the stream, parse it and send the results to the
+  given channel."
+  [chan stream]
+  (async/go
+    (loop []
+      (async/>! chan (parse-data stream))
+      (recur))
+    (async/close! chan)))
+
+(defn msgs->handler
+  "When messages are received on the channel, pass them to the given handler."
+  [chan handler]
+  (async/go
+    (loop []
+      (when-let [received (async/<! chan)]
+        (handler received)
+        (recur)))))
+
 (defn subscribe
   ;; XXX arity-0 is just temporary, to ease dev
   ([]
@@ -48,18 +67,6 @@
                                 :throw-exceptions false
                                 :as :stream})
           stream (:body response)]
-        ;; XXX move into dedicated function
-        ;; Write the messages to the channel as they come in
-        (async/go
-          (loop []
-            (async/>! chan (parse-data stream))
-            (recur))
-          (async/close! chan))
-        ;; XXX move into dedicated function
-        ;; When a message is received, call the handler
-        (async/go
-          (loop []
-            (when-let [received (async/<! chan)]
-              (handler received)
-              (recur))))
+        (stream->msgs chan stream)
+        (msgs->handler chan handler)
       chan)))
