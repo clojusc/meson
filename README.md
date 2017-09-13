@@ -86,6 +86,17 @@ Start up the REPL (and be sure to have a running Mesos deployment), then:
                      {:user "user1"
                       :name "a-framework"}})
 (def channel (scheduler/subscribe framework-info))
+```
+
+Since `subscribe` was only called with the framework setup info and didn't also
+pass a handler function, it will use the default framework handler (basically
+just a logging message for each scheduler event). Any real-world Meson
+framework will have its own handler and pass it to the `subscribe` function.
+
+Regardless, a channel is returned in both cases, and that can be interacted
+with directly in the REPL, for example:
+
+```clj
 (def result (async/<!! channel)
 (pprint result)
 ```
