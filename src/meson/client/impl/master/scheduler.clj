@@ -3,7 +3,9 @@
             [clojure.data.json :as json]
             [clojure.string :as string]
             [clojure.tools.logging :as log]
+            [meson.error :as error]
             [meson.http :as http]
+            [meson.http.status-code :as status-code]
             [meson.util :as util])
   (:import [clojure.lang Keyword]))
 
@@ -14,122 +16,121 @@
   {:timeout default-scheduler-timeout
    :threads default-scheduler-threads})
 
+(defn get-framework-id-payload
+  ""
+  [state]
+  (if-let [framework-id (:framework-id state)]
+    {:framework_id framework-id}
+    {}))
+
 (defn start
   ""
-  ([this]
-    (start this {}))
-  ([this opts]
+  ([master]
+    (start master {}))
+  ([master opts]
     (log/debug "Starting connection manager for the scheduler ...")
     (->> opts
          (into default-scheduler-opts)
          (http-conn-mgr/make-reusable-conn-manager)
-         (assoc this :conn-mgr))))
+         (assoc master :conn-mgr))))
 
 (defn stop
   ""
-  [this]
+  [master]
   (log/debug "Stopping connection manager for the scheduler ...")
-  (http-conn-mgr/shutdown-manager (:conn-mgr this)))
+  (http-conn-mgr/shutdown-manager (:conn-mgr master))
+  (assoc master :conn-mgr nil))
 
-(defn call
-  ([this ^Keyword type]
-    (call this type nil nil))
-  ([this ^Keyword type payload framework-id]
-    (call this type payload framework-id http/json-content-type))
-  ([this ^Keyword type payload framework-id content-type]
-    (call this type payload framework-id content-type {}))
-  ([this ^Keyword type payload framework-id content-type opts]
-    (let [data {:type (util/convert-upper type)
-                (util/convert-lower type) payload}]
-      (http/post
-        this
-        scheduler-path
-        :body (json/write-str (merge data (or framework-id {})))
-        :opts (into opts {:content-type content-type
-                          :accept content-type})))))
+(defn- call
+  ""
+  [type master state payload opts]
+  (log/debug "Making general scheduler call ...")
+  (log/trace "Got state:" state)
+  ;; XXX move this data-generation into a dedicated function, complete
+  ;; with conditional handling for differnet types of payloads
+  (let [data (merge {:type (util/convert-upper type)
+                     (util/convert-lower type) payload}
+                    (get-framework-id-payload state))]
+    (log/trace "Got payload data:" data)
+    ;; Note - all scheduler calls are POSTs
+    (http/post
+      master
+      scheduler-path
+      :body (json/write-str data)
+      :opts (-> (http/get-default-options master)
+                (http/update-conn-mgr (:conn-mgr master))
+                (http/update-default-headers (:stream-id state))
+                (http/add-option-overrides opts)))))
 
 (defn accept
-  ([this payload stream-id framework-id]
-    (accept this payload stream-id framework-id http/json-content-type))
-  ([this payload stream-id framework-id content-type]
-    (call
-      this
-      :accept
-      payload
-      framework-id
-      content-type
-      {:connection-manager (:conn-mgr this)
-       :headers {:mesos-stream-id stream-id}})))
+  ([master state payload]
+    (accept master state payload {}))
+  ([master state payload opts]
+    (call :accept master state payload opts)))
 
 (defn acknowledge
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn decline
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn kill-task
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn message
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn reconcile
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn request
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn revive
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn shutdown-executor
-  ([this payload stream-id framework-id]
+  ([master state payload]
     :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
+  ([master state payload opts]
     :not-yet-implemented))
 
 (defn subscribe
-  ([this payload]
-    (subscribe this payload http/json-content-type))
-  ([this payload content-type]
-    (call
-      this
-      :subscribe
-      payload
-      nil
-      content-type
-      {:as :stream
-       :streaming? true
-       :chunked? true
-       :connection http/keep-alive
-       :connection-manager (:conn-mgr this)})))
+  ([master state payload]
+    (subscribe master state payload {}))
+  ([master state payload opts]
+    (call :subscribe master state payload
+          (assoc opts :as :stream
+                      :streaming? true
+                      :chunked? true
+                      :connection http/keep-alive))))
 
 (defn teardown
-  ([this payload stream-id framework-id]
-    :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+  ([master state]
+    (teardown master state {}))
+  ([master state opts]
+    (call :teardown master state {} opts)))
 
 (def behaviour
   {:accept accept
@@ -143,3 +144,17 @@
    :subscribe subscribe
    :shutdown-executor shutdown-executor
    :teardown teardown})
+
+;;; Error Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(error/add-handler
+  #'call
+  java.lang.Exception
+  error/process-exception
+  error/meson-scheduler-error)
+
+(error/add-handler
+  #'call
+  [:status status-code/bad-request]
+  error/process-http-client-exception
+  error/meson-scheduler-error)

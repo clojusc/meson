@@ -1,5 +1,7 @@
 (ns meson.util.recordio
-  (:require [meson.util :as util]))
+  (:require [meson.error :as error]
+            [meson.util :as util])
+  (:import [clojure.lang Keyword]))
 
 (defprotocol IRecordIOStream
   (get-size! [this]
@@ -12,11 +14,20 @@
 
 (defn- read-record-size
   [^java.io.InputStream stream]
-  (loop [data []]
-    (let [byte (.read stream)]
-      (if (util/newline? byte)
-        (util/bytes->int data)
-        (recur (conj data byte))))))
+  (loop [array []]
+    (let [data (.read stream)]
+      (if (pos? data)
+        (do
+          (if (util/newline? data)
+            (util/bytes->int array)
+            (recur (conj array data))))
+        ; (throw (new Exception "End-of-Stream"))))))
+        ; (throw
+        ;   (error/end-of-stream "No more data in stream"
+        ;                        (str "Received a negative value when reading "
+        ;                             "from the input stream.")))))))
+        0))))
+
 
 (defn- read-record-data
   [^java.io.InputStream stream asize]
@@ -25,16 +36,20 @@
       (if (= byte-index asize)
         array
         (do
-          (aset-byte array byte-index (.read stream))
-          (recur (inc byte-index)))))))
+          (let [data (.read stream)]
+            (if (pos? data)
+              (do
+                (aset-byte array byte-index data)
+                (recur (inc byte-index)))
+              array)))))))
 
 (defn- read-next
   ([^java.io.InputStream stream]
     (let [size (read-record-size stream)]
       (read-record-data stream size)))
-  ([^java.io.InputStream stream as]
+  ([^java.io.InputStream stream ^Keyword type]
     (let [data (read-next stream)]
-      (case as
+      (case type
         :json (util/bytes->json data)
         :string (util/bytes->str data)
         :bytes data
@@ -46,3 +61,11 @@
    :next! read-next})
 
 (extend java.io.InputStream IRecordIOStream recordio-behaviour)
+
+;;; Error Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(error/add-handler
+  #'read-record-size
+  [:meson-error-type 'End-Of-Stream]
+  error/process-exception
+  error/end-of-stream)

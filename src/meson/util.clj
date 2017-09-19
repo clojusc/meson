@@ -69,10 +69,12 @@
 (defn bytes->json
   ""
   [bytes]
-  (-> bytes
-      (bytes->str)
-      (json/read-str :key-fn keyword)
-      (update :type #(keyword (string/lower-case %)))))
+  (if (> (count bytes) 0)
+    (-> bytes
+        (bytes->str)
+        (json/read-str :key-fn keyword)
+        (update :type #(keyword (string/lower-case %))))
+    ""))
 
 (defn str->bytes
   ""
