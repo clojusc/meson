@@ -1,9 +1,12 @@
 # meson
-[![Build Status][travis-badge]][travis][![Dependencies Status][deps-badge]][deps][![Clojars Project][clojars-badge]][clojars][![Clojure version][clojure-v]](project.clj)
+[![Build Status][travis-badge]][travis]
+[![Dependencies Status][deps-badge]][deps]
+[![Clojars Project][clojars-badge]][clojars]
+[![Clojure version][clojure-v]](project.clj)
 
 *Clojure Client Library for the Mesos HTTP API*
 
-[![][logo]][logo-large]
+[![Project Logo][logo]][logo-large]
 
 **meson** *noun*. A functional particle composed of a Mesos deployment and a Mesos HTTP API service bound together by the strongly interacting force of Clojure.
 
