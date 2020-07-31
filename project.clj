@@ -23,7 +23,7 @@
       :cluster-type :docker
       :docker {
         :container-id-file "/tmp/meson-mesos-container-id"
-        :image-name "clojusc/mesos"
+        :image-name "clojusc/mesos:1.0.1"
         :master "localhost:5050"
         :agent "localhost:5051"
         :port-mappings "5050-5051:5050-5051"}}}
