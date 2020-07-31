@@ -97,7 +97,7 @@ Regardless, a channel is returned in both cases, and that can be interacted
 with directly in the REPL, for example:
 
 ```clj
-(def result (async/<!! channel)
+(def result (async/<!! channel))
 (pprint result)
 ```
 Which should give something like:
