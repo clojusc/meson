@@ -2,7 +2,7 @@ sudo: required
 services: docker
 language: clojure
 before_install:
-  - docker pull clojusc/mesos
+  - docker pull clojusc/mesos:1.0.1
   - docker run -d -p 5050:5050 clojusc/mesos
 script:
   - lein travis
