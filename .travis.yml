@@ -3,7 +3,7 @@ services: docker
 language: clojure
 before_install:
   - docker pull clojusc/mesos:1.0.1
-  - docker run -d -p 5050:5050 clojusc/mesos
+  - docker run -d -p 5050:5050 clojusc/mesos:1.0.1
 script:
   - lein travis
 dist: trusty
