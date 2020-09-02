@@ -48,6 +48,10 @@
         (recur)))))
 
 (defn subscribe
+  "Subscribe a framework to a Mesos master scheduler.
+   Provide a framework [`args`] or a minimal default is used.
+   Provide handlers [`handler`] or defaults are used which log messages received only.
+   Provide a url to the mesos master [`mesos-master`] scheduler api or localhost is used."
   ;; XXX arity-0 is just temporary, to ease dev
   ([]
     (subscribe {:framework-info {
@@ -56,11 +60,13 @@
   ([args]
     (subscribe args scheduler-handlers/default))
   ([args handler]
+    (subscribe args handler "http://localhost:5050/api/v1/scheduler"))
+  ([args handler mesos-master]
     (log/info "args:" args)
     (let [chan (async/chan)
           data (message/create-call :subscribe args)
           prepared-data (records/prepare-data data)
-          response (httpc/post "http://localhost:5050/api/v1/scheduler"
+          response (httpc/post mesos-master
                                (assoc http/stream-options
                                       :form-params prepared-data))
           stream (:body response)]
