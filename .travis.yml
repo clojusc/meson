@@ -6,6 +6,7 @@ before_install:
   - docker run -d -p 5050:5050 clojusc/mesos
 script:
   - lein travis
+dist: trusty
 jdk:
   - oraclejdk8
   #- oraclejdk7
