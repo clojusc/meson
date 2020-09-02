@@ -76,6 +76,12 @@ Meson API Reference docs are available here:
 
 ## Usage [&#x219F;](#contents)
 
+### Provide Framework, Use Default Handlers and Default/Localhost Mesos
+
+Subscribe a framework with default handlers to a localhost Mesos master.
+
+Purpose: Development/testing.
+
 Start up the REPL (and be sure to have a running Mesos deployment), then:
 
 ```clj
@@ -89,9 +95,66 @@ Start up the REPL (and be sure to have a running Mesos deployment), then:
 ```
 
 Since `subscribe` was only called with the framework setup info and didn't also
-pass a handler function, it will use the default framework handler (basically
-just a logging message for each scheduler event). Any real-world Meson
-framework will have its own handler and pass it to the `subscribe` function.
+pass a handler function or mesos master URL, it will use the default framework handler (basically
+just a logging message for each scheduler event) and subscribe to localhost. Any real-world Meson
+framework will have its own handler, pass it to the `subscribe` function, and also pass a Mesos master
+scheduler api URL.
+
+### Provide Framework and Handlers, Use Default/Localhost Mesos
+
+Subscribe a framework, providing your own handler functions, to a localhost Mesos master.
+
+Purpose: Development/testing.
+
+* Define your own handler functions as multi-methods. (See `meson.api.scheduler.handlers` for an example.)
+* Same requires and framework definition as previous section.
+* Subscribe command is now:
+
+```clj
+(def channel (scheduler/subscribe framework-info my-handlers))
+```
+
+### Provide Framework, Handlers, and Mesos Master
+
+Subscribe a framework, providing your own handler functions, to a remote Mesos master.
+
+Purpose: Production use.
+
+* Define your own handler functions as multi-methods. (See `meson.api.scheduler.handlers` for an example.)
+* Same requires and framework definition as previous section.
+* Retrieve the URL to your remote Mesos master scheduler api.
+* Subscribe command is now:
+
+```clj
+(def channel (scheduler/subscribe framework-info my-handlers "https://my-mesos-master.org:5050/api/v1/scheduler"))
+```
+
+### Provide Framework, Mesos Master, Use Default Handlers
+
+Subscribe a framework, with default handler functions, to a remote Mesos master.
+
+This is a scenario in which you want to verify you can successfully subscribe to a remote mesos master,
+but have not written handlers yet.
+
+**CAUTION**: The default handlers do NOT decline offers. Once subscribed, all offers will go to the framework and wait,
+preventing other frameworks from getting offers.
+
+Purpose: Development/testing.
+
+* Require an additional meson library. (see code below)
+* Same framework definition as previous section.
+* Retrieve the URL to your remote Mesos master scheduler api.
+* Subscribe command is now:
+
+```clojure
+(require '[clojure.core.async :as async]
+         '[clojure.pprint :refer [pprint]]
+         '[meson.api.scheduler.core :as scheduler]
+         '[meson.api.scheduler.handlers :as scheduler-handlers])
+(def channel (scheduler/subscribe framework-info scheduler-handlers/default "https://my-mesos-master.org:5050/api/v1/scheduler"))
+```
+
+### Subscription Results
 
 Regardless, a channel is returned in both cases, and that can be interacted
 with directly in the REPL, for example:
