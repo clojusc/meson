@@ -89,7 +89,7 @@
     "travis" [
       "do"
         ["version"]
-        ["check-deps"]
+        ; ["check-deps"] ; when a package is outdated, do stops execution.
         ["compile"]
         ["uberjar"]
         ["test" ":unit"]

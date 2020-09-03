@@ -5,6 +5,7 @@ before_install:
   - docker pull clojusc/mesos:1.0.1
   - docker run -d -p 5050:5050 clojusc/mesos:1.0.1
 script:
+  - lein check-deps || true # log outdated libraries, but don't exit with error.
   - lein travis
 dist: trusty
 jdk:
