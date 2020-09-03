@@ -34,7 +34,7 @@
       :exclusions [org.clojure/clojure]
       :plugins [
         [jonase/eastwood "0.2.4"]
-        [lein-ancient "0.6.10"]
+        [lein-ancient "0.6.15"]
         [lein-bikeshed "0.4.1"]
         [lein-kibit "0.1.5"]
         [lein-shell "0.5.0"]
@@ -58,7 +58,7 @@
       :dependencies [
         [codox-theme-rdash "0.1.2"]]
       :plugins [
-        [lein-codox "0.10.3"]
+        [lein-codox "0.10.7"]
         [lein-simpleton "1.3.0"]]
       :codox {
         :project {
