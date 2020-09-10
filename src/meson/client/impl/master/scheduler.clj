@@ -1,7 +1,6 @@
 (ns meson.client.impl.master.scheduler
   (:require [clj-http.conn-mgr :as http-conn-mgr]
             [clojure.data.json :as json]
-            [clojure.string :as string]
             [clojure.tools.logging :as log]
             [meson.http.core :as http]
             [meson.util.core :as util])
@@ -63,51 +62,107 @@
 
 (defn acknowledge
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (acknowledge this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :acknowledge
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn decline
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (decline this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :decline
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn kill-task
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (kill-task this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :kill
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn message
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (message this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :message
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn reconcile
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (reconcile this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :reconcile
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn request
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (request this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :request  ; type is request, json keyword is requests (plural)
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn revive
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (revive this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :revive
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn shutdown-executor
   ([this payload stream-id framework-id]
-    :not-yet-implemented)
+    (shutdown-executor this payload stream-id framework-id http/json-content-type))
   ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+    (call
+      this
+      :shutdown
+      payload
+      framework-id
+      content-type
+      {:connection-manager (:conn-mgr this)
+       :headers {:mesos-stream-id stream-id}})))
 
 (defn subscribe
   ([this payload]
@@ -126,10 +181,17 @@
        :connection-manager (:conn-mgr this)})))
 
 (defn teardown
-  ([this payload stream-id framework-id]
-    :not-yet-implemented)
-  ([this payload stream-id framework-id content-type]
-    :not-yet-implemented))
+  ([this stream-id framework-id]
+    (teardown this stream-id framework-id http/json-content-type))
+  ([this stream-id framework-id content-type]
+    (call
+      this
+      :teardown
+       nil
+       framework-id
+       content-type
+       {:connection-manager (:conn-mgr this)
+        :headers {:mesos-stream-id stream-id}})))
 
 (def behaviour
   {:accept accept
