@@ -30,6 +30,20 @@
   (log/debug "Stopping connection manager for the scheduler ...")
   (http-conn-mgr/shutdown-manager (:conn-mgr this)))
 
+(defn payload-kw
+  "Determine the payload's keyword.
+   Some API endpoints may break the 1 to 1 pattern of :type
+   and payload keyword."
+  [^Keyword type]
+    (condp = type
+      :request (str (util/keyword->lower type) "s")
+      (util/keyword->lower type)))
+
+(comment
+  (payload-kw :request) ; plural expected
+  (payload-kw :accept) ; singular expected
+  (payload-kw :subscribe)) ; singular expected
+
 (defn call
   ([this ^Keyword type]
     (call this type nil nil))
@@ -39,7 +53,7 @@
     (call this type payload framework-id content-type {}))
   ([this ^Keyword type payload framework-id content-type opts]
     (let [data {:type (util/keyword->upper type)
-                (util/keyword->lower type) payload}]
+                (payload-kw type) payload}]
       (http/post
         this
         scheduler-path
