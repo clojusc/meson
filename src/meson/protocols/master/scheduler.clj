@@ -36,5 +36,5 @@
     "This is the first step in the communication process between the scheduler
     and the master. This is also to be considered as subscription to the
     “/scheduler” events stream.")
-  (teardown [this payload stream-id framework-id] [this payload stream-id framework-id content-type]
+  (teardown [this stream-id framework-id] [this stream-id framework-id content-type]
     "Sent by the scheduler when it wants to tear itself down."))
