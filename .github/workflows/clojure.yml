@@ -23,9 +23,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: Dependencies
       run: lein deps
+    - name: Version
+      run: lein version
     - name: Build
       run: lein compile
     - name: Tests
-      run: lein test
+      run: lein test :unit
+    - name: Docs
+      run: lein docs
     - name: Package
       run: lein uberjar
