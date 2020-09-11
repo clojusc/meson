@@ -1,6 +1,6 @@
 # meson
 
-[![Build Status][travis-badge]][travis][![Dependencies Status][deps-badge]][deps][![Clojars Project][clojars-badge]][clojars][![Clojure version][clojure-v]](project.clj)
+[![Build Status][gh-actions-badge]][gh-actions][![Clojars Project][clojars-badge]][clojars][![Clojure version][clojure-v]](project.clj)
 
 *Clojure Client Library for the Mesos HTTP API*
 
@@ -182,15 +182,15 @@ Which should give something like:
 
 ## License [&#x219F;](#contents)
 
-Copyright © 2016-2017, Clojure-Aided Enrichment Center
+Copyright © 2016-2020, Clojure-Aided Enrichment Center
 
 Apache License, Version 2.0.
 
 
 <!-- Named page links below: /-->
 
-[travis]: https://travis-ci.org/clojusc/meson
-[travis-badge]: https://travis-ci.org/clojusc/meson.png?branch=master
+[gh-actions-badge]: https://github.com/clojusc/meson/workflows/ci%2Fcd/badge.svg
+[gh-actions]: https://github.com/clojusc/meson/actions
 [deps]: http://jarkeeper.com/clojusc/meson
 [deps-badge]: http://jarkeeper.com/clojusc/meson/status.svg
 [logo]: resources/images/Meson-nonet-spin-0-250x.png
