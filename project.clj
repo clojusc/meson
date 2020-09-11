@@ -86,7 +86,7 @@
         ["check"] ["kibit"] ["outlaw"]]
     "docs" [
       "with-profile" "+docs" "codox"]
-    "travis" [
+    "all" [
       "do"
         ["version"]
         ; ["check-deps"] ; when a package is outdated, do stops execution.
